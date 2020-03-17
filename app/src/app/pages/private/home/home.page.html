@@ -4,7 +4,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Anasayfa
+      <app-logo></app-logo>
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -14,8 +14,10 @@
     <!-- header -->
     <ion-grid>
       <ion-row>
-        <ion-col size="12">
-          <ion-searchbar placeholder="İstediğiniz sorudan başlayabilirsiniz :)"></ion-searchbar>
+        <ion-col size="8">
+          <!-- title -->
+          <h3>Son Cevaplananlar</h3>
+          <!--#title -->
         </ion-col>
         <ion-col class="ion-align-self-center">
           <div class="ion-text-end" style="margin-right:8px">
@@ -25,10 +27,6 @@
       </ion-row>
     </ion-grid>
     <!--#header -->
-
-    <!-- title -->
-    <h3 style="margin-left:15px;">Son Cevaplananlar</h3>
-    <!--#title -->
 
     <!-- questions -->
     <ion-list lines="full">

@@ -1,0 +1,165 @@
+.question-left {
+    float:left;
+    width:10%;
+    height:115px;
+    max-height: 115px;
+    padding: 6px;
+    margin-top: 11px;
+}
+
+.question-right {
+    float:left;
+    width:87%;
+}
+
+.reputation-bar  {
+    display: inline-block;
+    height: 38px;
+    min-width: 38px;
+    margin: 0 3px 0 0;
+    font-size: 11px;
+    padding: 3px;
+    text-align:center;
+    border:1px solid #d8d8d8;
+    border-radius: 5px;
+}
+
+.answered{
+    border: 1px solid #5eba7d !important;
+    color: #0c7d39;
+}
+.solved{
+    background-color: #5eba7d;
+    color: #fff;
+    border: 1px solid #5eba7d !important;
+}
+
+.row1{
+    margin-bottom: 10px;
+}
+
+.views{
+    width:81px;
+}
+
+.question-tags
+{
+    float:left;
+    margin-left:-5px;
+    margin-top:-10px;
+    ion-chip {
+        height:20px;
+        font-size:11px;
+    }
+}
+
+.question-asked-by {
+    float: right;
+    font-size:12px;
+    ion-text {
+        cursor: pointer;
+    }
+}
+
+.question-mobile
+{
+    margin-top:5px;
+    display: none;
+    overflow:auto;
+    .reputation-bar-mobile
+    {
+        display: inline-block;
+        margin: 0 10px 0 0;
+        font-size: 11px;
+        width: auto;
+        padding:2px;
+    }
+}
+
+.total-question-bar {
+    border-bottom:1px solid #dedede;
+}
+
+.ios .total-question-bar {
+    border-bottom:2px solid #dedede;
+}
+
+@media only screen and (max-width: 1388px) {
+    .question-left {
+        display:none;
+    }
+    .question-right {
+        width:100%;
+        margin-bottom:10px;
+    }
+    .question-mobile
+    {
+        display: block;
+    }
+}
+
+.filter-area {
+    background-color: #e4effd;
+    border: 1px solid #b0bcce;
+    border-radius: 5px;
+    padding: 10px;
+    color: #202e3a;
+}
+
+.filter-items {
+    .filter-item {
+        display: block;
+        overflow: auto;
+        padding-top:5px;
+        .filter-item-checkbox {
+            float:left;
+            padding-right:10px;
+            vertical-align: middle;
+        }
+    }
+}
+
+@import "~node_modules/ngx-chips/core/styles/core/_core.scss";
+
+$foundation-primary: #1779ba;
+$foundation-primary-dark: darken($foundation-primary, 10%);
+
+// this is the container's theme
+$foundation-theme: (
+    container-border-bottom: 1px solid $foundation-primary
+);
+
+// this is the tag's theme
+$foundation-tag-theme: (
+
+    background: $foundation-primary,
+    background-focused: $foundation-primary-dark,
+    background-active: $foundation-primary-dark,
+    background-hover: $foundation-primary-dark,
+    color: #fff,
+    color-hover: #fff,
+    border-radius: 2px
+);
+
+// this is the delete icon's theme
+$foundation-icon-theme: (
+    fill: #fff,
+    fill-focus: #eee,
+    transition: all 0.35s
+);
+
+// apply theme to the container
+::ng-deep tag-input .ng2-tag-input.foundation-theme {
+    font-size:14px;
+    @include tag-input-theme($foundation-theme);
+}
+
+// apply theme to the tags
+::ng-deep tag-input .ng2-tag-input.foundation-theme tag {
+    @include tag-theme($foundation-tag-theme);
+}
+
+// apply theme to the delete icon
+::ng-deep tag-input .ng2-tag-input.foundation-theme tag delete-icon {
+    @include icon-theme($foundation-icon-theme);
+}
