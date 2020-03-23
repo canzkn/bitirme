@@ -1,0 +1,38 @@
+.tag-area {
+    border: 1px solid #dedede;
+    border-radius: 8px;
+    font-size: 13px;
+    padding: 10px;
+    overflow: auto;
+    min-width: 320px;
+
+    .icon {
+        padding-bottom:10px;
+    }
+    
+    .tag-content {
+        padding-bottom: 10px;
+        height:75px;
+        color:#404040
+    }
+
+    .tag-bottom {
+        color:#7d7d7d;
+        padding-bottom:13px;
+        span.tag-questions {
+            float:left;
+        }
+        span.tag-activity {
+            float:right;
+        }
+    }
+}
+
+.sc-ion-searchbar-ios-h {
+    padding-left: unset;
+    padding-right: unset;
+    -webkit-padding-start: 0;
+    padding-inline-start: 0;
+    -webkit-padding-end: 0;
+    padding-inline-end: 0;
+}

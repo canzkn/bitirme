@@ -58,5 +58,10 @@ export class QuestionsPage implements OnInit {
     this.isShowFilter = !this.isShowFilter;
   }
 
+  applyFilter()
+  {
+    
+  }
+
   /*[ngModel]="checkedIdx == i" (ngModelChange)="$event ? checkedIdx = i : checkedIdx = -1"*/
 }
