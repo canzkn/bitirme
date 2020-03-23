@@ -1,9 +1,85 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>login</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
+  <div class="bg">
 
+    <!-- desktop and pc resolution -->
+    <div class="desktop">
+      <!-- left side -->
+        <div class="left-side">
+          <!-- logo -->
+            <div class="logo"><img src="../../../../assets/images/logo_big.png" /></div>
+          <!--#logo -->
+
+          <!-- description -->
+          <p class="description"><span>Kavram Ağı</span>, yaygın kullanılan programlama öğrenme platformlarının araştırılarak Türkçe kaynak ve Türkçe mentor desteği sunulmasını amaçlayan, sorulan sorulara karşı geliştirilecek öneri sistemi altında kaynak araştırılıp kullanıcıya sorduğu soru ile alakalı cevap niteliğinde kaynaklar bulan, programlama konusunda yetkinliği yapılacak olan testlerle ispatlanmış kişilerin, gruplarıyla canlı yayın görüşmeleri yapıp, anlık soru cevap yapabileceği bir uygulamadır.</p>
+          <!--#description -->
+        </div>
+      <!--#left side -->
+      <!-- right side -->
+      <div class="right-side">
+        <!-- headline -->
+          <h1>Giriş Yap</h1>
+        <!--#headline -->
+
+        <!-- form area -->
+        <form>
+          <ion-list lines="none" class="bg-transparent ion-no-margin ion-no-padding">
+            
+            <!-- text input -->
+            <ion-item color="none" lines="none" class="ion-no-margin ion-no-padding">
+              <ion-input required type="text" placeholder="Kullanıcı Adı"></ion-input>
+            </ion-item>
+            <ion-item color="none" lines="none" class="ion-no-margin ion-no-padding">
+              <ion-input required type="password" placeholder="Şifre"></ion-input>
+            </ion-item>
+            <!--#text input -->
+
+            <!-- seperator and login with social media -->
+            <ion-item color="none" lines="none" class="ion-no-margin ion-no-padding">
+              <div class="seperator"><hr class="hr-text" data-content="ya da"></div>
+            </ion-item>
+            <ion-item color="none" lines="none" class="ion-no-margin ion-no-padding ion-text-center">
+              <ion-label class="loginSM">Bir sosyal medya uygulaması ile giriş yap</ion-label>
+            </ion-item>
+            
+            <ion-item color="none" lines="none" style="margin-top:-30px;" class="ion-no-margin ion-no-padding ion-text-center">
+              <ion-label class="iconSM">
+                <ion-button mode="ios">
+                  <ion-icon slot="icon-only" name="logo-facebook"></ion-icon>
+                </ion-button>
+
+                <ion-button mode="ios">
+                  <ion-icon slot="icon-only" name="logo-twitter"></ion-icon>
+                </ion-button>
+              </ion-label>
+            </ion-item>
+            <!--#seperator and login with social media -->
+            
+            <!-- login button -->
+            <ion-item color="none" lines="none" class="ion-no-margin ion-no-padding ion-text-center">
+              <ion-label class="loginButton">
+                <ion-button color="light" class="loginButton">
+                  <ion-icon slot="icon-only" name="arrow-forward"></ion-icon>
+                </ion-button>
+              </ion-label>
+            </ion-item>
+            <!--#login button -->
+
+            <!-- register -->
+            <ion-item color="none" lines="none" class="ion-no-margin ion-no-padding ion-text-center">
+              <ion-label class="register">
+                <p><span>Kavram Ağı</span>'na üye değil misin?</p>
+                <p><a routerLink="/signup">Hemen Kayıt Ol</a></p>
+              </ion-label>
+            </ion-item>
+            <!--#register -->
+
+          </ion-list>
+        </form>
+        <!--#form area -->
+      </div>
+    <!--#right side -->
+    </div>
+    <!--#desktop and pc resolution -->
+
+  </div>
 </ion-content>
