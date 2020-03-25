@@ -1,0 +1,301 @@
+// define colors
+$text-color: #000;
+$headline-color: #fff;
+$input-border-color: #c5c5c5;
+$input-text-color: #636363;
+$page-bg-color: #fbfbfb;
+$nav-border-color: #e49e33;
+
+ion-content {
+
+    --background: #fbfbfb;
+    
+    // navbar
+    nav {
+        background-image: url("../../../../assets/images/bg.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 250px;
+        border-bottom:3px solid $nav-border-color;
+        position: relative;
+        // navbar inside
+        .navbar {
+            margin:0 auto;
+            text-align: center;
+
+            // logo
+            .logo img {
+                margin-top:25px;
+                width:480px;
+                max-width: 480px;
+            }
+
+            // headline
+            h1.headline {
+                color:$headline-color;
+            }
+
+            // arrow up
+            .arrow-up {
+                width: 0; 
+                height: 0; 
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-bottom: 5px solid $nav-border-color;
+                position: absolute;
+                bottom:0;
+                left:50%;
+            }
+        }
+    }
+
+    // content area
+    .content {
+        width: 50%;
+        margin:0 auto;
+        text-align: center;
+
+        // form area
+        form.register {
+            padding-top:10px;
+            // ion list
+            ion-list.bg-transparent {
+                background: transparent;
+                // ion item
+                ion-item {
+
+                    padding-bottom:10px;
+                    --inner-padding-end:0px;
+                    // ion input
+                    ion-input {
+                        font-family: 'Inter';
+                        border: 2px solid $input-border-color;
+                        border-radius: 5px;
+                        font-size: 14px;
+                        color: $input-text-color;
+                        padding-left:10px!important;
+                        padding-right:10px!important;
+                        height:45px;
+                        font-weight: 500;
+                    }
+
+                    //ion checkbox
+                    ion-checkbox {
+                        margin-right:15px!important;
+                        margin-left: 2px;
+                    }
+
+                    // ion label
+                    ion-label {
+                        color:$input-text-color;
+                        font-family: 'Inter';
+                        font-weight: 500;
+                    }
+                }
+            }
+
+            //seperator
+            .seperator {
+                max-width: 50%;  
+                margin: 0px auto;
+
+                .hr-text {
+                    font-family: 'Inter';
+                    line-height: 1em;
+                    outline: 0;
+                    border: 0;
+                    color: #636363;
+                    text-align: center;
+                    font-size:13px;
+                    height: 1.5em;
+                    &:before {
+                        content: '';
+                        background: linear-gradient(to right, transparent, #818078, transparent);
+                        position: absolute;
+                        left: 0;
+                        top: 50%;
+                        width: 100%;
+                        margin-left: 2px;
+                        height: 1px;
+                    }
+                    &:after {
+                        content: attr(data-content);
+                        position: relative;
+                        display: inline-block;
+                        padding: 0 .5em;
+                        line-height: 1.5em;
+                        color: $input-text-color;
+                        background-color: $page-bg-color;
+                        font-weight: 500;
+                    }
+                }
+            }
+
+            // login with social media
+            .loginSM{
+                color: $text-color;
+                font-size:14px;
+                font-family: 'Inter';
+                margin-top:-10px;
+            }
+
+            // social media icons
+            .iconSM {
+                ion-button {
+                    --background: none;
+                    --background-hover:none;
+                    --background-activated:none;
+                    font-size:16px;
+                    color:$input-text-color;
+                }
+                ion-button:hover {
+                    color:rgb(121, 121, 121);
+                }
+            }
+
+            // login button
+            .loginButton {
+                margin-top:0;
+                ion-button.loginButton {
+                    width: 71px;
+                    height: 72px;
+                    --border-radius: 50%;
+        
+                    ion-icon {
+                        font-size:24px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// ######### Popular Resolutions #########
+// - 1280 x 850
+// - 1024 x 1366
+// - 800 x 1280
+// - 768 x 1024
+// - 600 x 960
+// - 480 x 853
+// - 414 x 896
+// - 414 x 736
+// - 412 x 847
+// - 412 x 824
+// - 412 x 732
+// - 375 x 812
+// - 375 x 667
+// - 360 x 740
+// - 360 x 640
+// - 320 x 568
+// #######################################
+
+/************* start responsive *************/
+
+// WIDTH
+// max-width:1024px
+@media only screen and (max-width:1024px){
+    .content {
+        width:80%!important;
+    }
+}
+
+// max-width:600px
+@media only screen and (max-width:600px){
+    .navbar {
+        padding-top:15px;
+    }
+
+    .logo img {
+        width:400px!important;
+    }
+}
+
+// max-width:480px
+@media only screen and (max-width:480px){
+    ion-label.user-agreement {
+        font-size:15px!important;
+    }
+}
+
+// max-width:414px
+@media only screen and (max-width:414px){
+    nav {
+        height:229px!important;
+    }
+
+    ion-label.user-agreement {
+        font-size:12px!important;
+    }
+
+    .logo img {
+        width:350px!important;
+    }
+}
+
+// max-width:375px
+@media only screen and (max-width:375px){
+    nav {
+        height:213px!important;
+    }
+
+    .logo img {
+        width:290px!important;
+    }
+}
+
+// max-width:360px
+@media only screen and (max-width:360px){
+    ion-label.user-agreement {
+        font-size:10px!important;
+    }
+}
+
+// HEIGHT
+// max-height:740px
+@media only screen and (max-height:740px) {
+    nav {
+        height:200px!important;
+    }
+
+    h1.headline {
+        //margin-top:0px!important;
+        font-size:18px!important;
+    }
+}
+// max-height:732px
+@media only screen and (max-height:732px) {
+    nav {
+        height:225px!important;
+    }
+}
+
+// max-height:667px
+@media only screen and (max-width:375px) and (max-height:667px) {
+    nav {
+        height:159px!important;
+    }
+    .logo img {
+        width:243px!important;
+        margin-top:11px!important;
+    }
+
+    h1.headline {
+        margin-top:15px!important;
+        font-size:18px!important;
+    }
+}
+
+// max-height:640px
+@media only screen and (max-height:640px) {
+    nav {
+        height:133px!important;
+    }
+
+    h1.headline {
+        margin-top:0px!important;
+        font-size:14px!important;
+    }
+}
+
+/************** end responsive **************/
