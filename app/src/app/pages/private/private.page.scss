@@ -1,0 +1,27 @@
+$user-name-color:#ff8531;
+$point-color:#19ffb5;
+
+.usercp {
+    ion-item {
+        color:#fff;
+        ion-avatar {
+            border:2px solid #fff;
+        }
+    }
+    p.username {
+        color:$user-name-color;
+        font-weight:600;
+    }
+
+    b.point {
+        color:$point-color;
+    }
+}
+
+ion-list {
+    ion-item {
+        ion-label {
+            font-family: 'Inter';
+        }
+    }
+}

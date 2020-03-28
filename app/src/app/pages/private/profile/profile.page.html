@@ -1,0 +1,248 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      <app-logo></app-logo>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- profile header -->
+  <div class="profile-header">
+    <div class="profile-banner profile-header-bg" style="background-image: url(https://coverfiles.alphacoders.com/116/116075.png);"></div>
+    
+    <div class="container">
+      <div class="profile-picture-box">
+        <div class="profile-picture"><img src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200" /></div>
+      </div>
+
+      <div class="profile-info">
+        <div class="profile-name">
+          <span>Hasan Can Özkan <span class="username">(@canveotesi)</span></span>
+        </div>
+  
+        <div class="contact-info">
+          <div class="info">
+            <span class="icon"><ion-icon name="location"></ion-icon></span>
+            <span class="text">Taşköprü, Kastamonu, Turkey</span>
+          </div>
+          <div class="info">
+            <span class="icon"><ion-icon name="calendar"></ion-icon></span>
+            <span class="text">8 yıl, 3 ay'dır üye</span>
+          </div>
+          <div class="info">
+            <span class="icon"><ion-icon name="link"></ion-icon></span>
+            <span class="text">canozkan.net</span>
+          </div>
+        </div>
+
+        <div class="contact-info">
+          <div class="info">
+            <span class="icon"><ion-icon name="eye"></ion-icon></span>
+            <span class="text">144 profil görüntülemesi</span>
+          </div>
+          <div class="info">
+            <span class="icon"><ion-icon name="time"></ion-icon></span>
+            <span class="text">7 dakika önce son aktivite</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--#profile header -->
+
+  <!-- mobile -->
+  <div class="contact-info-mobile">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-md><span class="icon"><ion-icon name="location"></ion-icon></span>
+          <span class="text">Taşköprü, Kastamonu, Turkey</span></ion-col>
+        <ion-col size="12" size-md><span class="icon"><ion-icon name="calendar"></ion-icon></span>
+          <span class="text">8 yıl, 3 ay'dır üye</span></ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12" size-md><span class="icon"><ion-icon name="link"></ion-icon></span>
+          <span class="text">canozkan.net</span></ion-col>
+        <ion-col size="12" size-md><span class="icon"><ion-icon name="eye"></ion-icon></span>
+          <span class="text">144 profil görüntülemesi</span></ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12" size-md><span class="icon"><ion-icon name="time"></ion-icon></span>
+          <span class="text">7 dakika önce son aktivite</span></ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <!-- #mobile -->
+
+  <!-- profile content -->
+  <div class="profile-content container">
+    <ion-toolbar mode="md" class="desktop">
+      <ion-grid>
+        <ion-row>
+          <ion-col><ion-title><span class="score">11,250</span> <span class="point">Puan</span></ion-title></ion-col>
+          <ion-col><ion-title><span class="score">14</span> <span class="point">Cevap</span></ion-title></ion-col>
+          <ion-col><ion-title><span class="score">0</span> <span class="point">Soru</span></ion-title></ion-col>
+          <ion-col><ion-title><span class="score">~7K</span> <span class="point">Etkileşim</span></ion-title></ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-toolbar>
+
+    <div>
+      <ion-toolbar mode="md" class="mobile">
+        <ion-grid>
+          <ion-row>
+            <ion-col><ion-title><div class="score">11,250</div> <div class="point">Puan</div></ion-title></ion-col>
+            <ion-col><ion-title><div class="score">14</div> <div class="point">Cevap</div></ion-title></ion-col>
+          </ion-row>
+          <ion-row> 
+            <ion-col><ion-title><div class="score">0</div> <div class="point">Soru</div></ion-title></ion-col>
+            <ion-col><ion-title><div class="score">~7K</div> <div class="point">Etkileşim</div></ion-title></ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-toolbar>
+    </div>
+  </div>
+  <!--#profile content -->
+
+  <!-- topics -->
+  <div class="topics container">
+    <ion-list lines="full">
+      <ion-list-header>
+        <ion-grid>
+          <ion-row>
+            <ion-col class="ion-no-padding">
+              <h2>Sorular <span>(1252)</span></h2>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12" size-md>
+              <ion-segment mode="ios" value="interest">
+                <ion-segment-button value="interest">
+                  <ion-label>Tümü</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="hot">
+                  <ion-label>Sordukları</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="week">
+                  <ion-label>Cevapladıkları</ion-label>
+                </ion-segment-button>
+              </ion-segment>
+            </ion-col>
+            <ion-col size="12" size-md>
+              <ion-segment mode="ios" value="popular">
+                <ion-segment-button value="popular">
+                  <ion-label>Popüler</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="new">
+                  <ion-label>Yeni</ion-label>
+                </ion-segment-button>
+              </ion-segment>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-list-header>
+  
+      <ion-item>
+        <ion-badge slot="start" color="medium">11</ion-badge>
+        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
+        <ion-label>My Item</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-badge slot="start" color="success">11</ion-badge>
+        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
+        <ion-label>My Item</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-badge slot="start" color="success">11</ion-badge>
+        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
+        <ion-label>My Item</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-badge slot="start" color="medium">11</ion-badge>
+        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
+        <ion-label>My Item</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-badge slot="start" color="success">11</ion-badge>
+        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
+        <ion-label>My Item</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-badge slot="start" color="medium">11</ion-badge>
+        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
+        <ion-label>My Item</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-badge slot="start" color="success">11</ion-badge>
+        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
+        <ion-label>My Item</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-badge slot="start" color="medium">11</ion-badge>
+        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
+        <ion-label>My Item</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+  <!--#topics -->
+
+  <!-- tags -->
+  <div class="tags container">
+    <ion-list lines="full">
+      <ion-list-header>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <h2>Etiketler <span>(1252)</span></h2>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-list-header>
+  
+      <ion-item>
+        <ion-badge slot="start" color="medium">11</ion-badge>
+        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
+        <ion-label>My Item</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-badge slot="start" color="success">11</ion-badge>
+        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
+        <ion-label>My Item</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-badge slot="start" color="success">11</ion-badge>
+        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
+        <ion-label>My Item</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-badge slot="start" color="medium">11</ion-badge>
+        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
+        <ion-label>My Item</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-badge slot="start" color="success">11</ion-badge>
+        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
+        <ion-label>My Item</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-badge slot="start" color="medium">11</ion-badge>
+        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
+        <ion-label>My Item</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-badge slot="start" color="success">11</ion-badge>
+        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
+        <ion-label>My Item</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-badge slot="start" color="medium">11</ion-badge>
+        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
+        <ion-label>My Item</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+  <!--#tags -->
+</ion-content>

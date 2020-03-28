@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PrivatePage implements OnInit {
 
+  // menu items
+
   public appPages = [
     {
       title: 'Son Cevaplanan Sorular',
@@ -27,6 +29,26 @@ export class PrivatePage implements OnInit {
       title: 'Kullanıcılar',
       url: '/board/users',
       icon: 'people-sharp'
+    }
+  ];
+
+  // profile items
+
+  public profilePages = [
+    {
+      title: 'Profil Sayfam',
+      url: '/board/profile',
+      icon: 'person-sharp',
+    },
+    {
+      title: 'Bilgilerimi Düzenle',
+      url: '/board/edit-profile',
+      icon: 'create-sharp'
+    },
+    {
+      title: 'Çıkış Yap',
+      url: '/board/tags',
+      icon: 'log-out-sharp'
     }
   ];
 

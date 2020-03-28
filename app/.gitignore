@@ -16,6 +16,7 @@ $RECYCLE.BIN/
 *.log
 log.txt
 npm-debug.log*
+capacitor.config.json
 
 /.idea
 /.ionic
@@ -29,3 +30,4 @@ npm-debug.log*
 /platforms
 /plugins
 /www
+/android

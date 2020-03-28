@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      <app-logo></app-logo>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <!-- profil fotoğrafı -->
+  <ion-list mode="ios" lines="none">
+    <ion-list-header>
+      <ion-label>Profil Fotoğrafı</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <div class="profile-picture-area">
+        <div class="profile-picture-box">
+          <img src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200" />
+          <p class="edit">Fotoğrafı Düzenle</p>
+        </div>
+      </div>
+    </ion-item>
+  </ion-list>
+  <!--#profil fotoğrafı -->
+
+  <!-- kapak fotoğrafı -->
+  <ion-list mode="ios" lines="none">
+    <ion-list-header>
+      <ion-label>Kapak Fotoğrafı</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <div class="cover-picture-area">
+        <div class="cover-picture-box">
+          <img src="https://coverfiles.alphacoders.com/116/116075.png" />
+          <p class="edit">Kapak Fotoğrafını Düzenle</p>
+        </div>
+      </div>
+    </ion-item>
+  </ion-list>
+  <!--#kapak fotoğrafı -->
+
+  <!-- inputs -->
+  <form onsubmit="processForm(event)">
+    <ion-list mode="ios" lines="full" class="ion-no-margin ion-no-padding">
+      <ion-list-header> 
+        <ion-label>Hesap Bilgileri</ion-label>
+      </ion-list-header>
+      <ion-item>
+        <ion-label position="stacked">First Name <ion-text color="danger">*</ion-text></ion-label>
+        <ion-input required type="text" oninput="handleFirstNameValue(event)"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Last Name <ion-text color="danger">*</ion-text></ion-label>
+        <ion-input required type="text" oninput="handleLastNameValue(event)"></ion-input>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label position="floating">Title</ion-label>
+        <ion-input></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Address</ion-label>
+        <ion-input placeholder="Address Line 1"></ion-input>
+        <ion-input placeholder="Address Line 2"></ion-input>
+        <ion-input placeholder="City"></ion-input>
+        <ion-input placeholder="State"></ion-input>
+        <ion-input placeholder="Zip Code"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Notes</ion-label>
+        <ion-textarea></ion-textarea>
+      </ion-item>
+    </ion-list>
+
+    <div class="ion-padding">
+      <ion-button expand="block" type="submit" class="ion-no-margin">Create account</ion-button>
+    </div>
+  </form>
+  <!--#inputs -->
+</ion-content>

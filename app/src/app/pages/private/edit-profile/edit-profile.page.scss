@@ -1,0 +1,94 @@
+.profile-picture-area {
+    width:100%;
+    text-align:center; 
+    .profile-picture-box{
+        position: relative;
+        width:180px;
+        height:180px;
+        cursor:pointer;
+        margin:0 auto;
+        img {
+            width:180px;
+            height: 180px;
+            border:5px solid #e8e8e8;
+            border-radius: 50%;
+        }
+
+        p.edit {
+            height: 41%;
+            width: 162px;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            bottom: 5px;
+            left: 9px;
+            right: 0;
+            background: #00000075;
+            color: #fff;
+            border-bottom-left-radius: 90px;
+            border-bottom-right-radius: 90px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 700;
+            text-shadow: 1px 1px 1px #000;
+            padding-top: 20px;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity .2s, visibility .2s;
+        }
+        &:hover p.edit { 
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+}
+
+.cover-picture-area {
+    padding-top:20px;
+    width: 100%;
+    text-align: center;
+    .cover-picture-box{
+        position: relative;
+        cursor:pointer;
+        margin:0 auto;
+        img {
+            width: 95%;
+            border-radius: 10px;
+        }
+
+        p.edit {
+            width: 200px;
+            height: 53px;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            top: 19px;
+            bottom: 0;
+            left: 48px;
+            right: 0;
+            background: #00000075;
+            color: #fff;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 700;
+            text-shadow: 1px 1px 1px #000;
+            padding-top: 20px;
+            border: 1px solid #7d7d7d;
+            box-shadow: 3px 3px #000;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity .2s, visibility .2s;
+        }
+        &:hover p.edit { 
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+}
+
+@media only screen and (max-width:1023px)
+{
+    p.edit {
+        display:none!important;
+    }
+}
