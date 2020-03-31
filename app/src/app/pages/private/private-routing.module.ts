@@ -31,6 +31,10 @@ const routes: Routes = [
       {
         path: 'edit-profile',
         loadChildren: () => import('./edit-profile/edit-profile.module').then( m => m.EditProfilePageModule)
+      },
+      {
+        path: 'ask-question',
+        loadChildren: () => import('./ask-question/ask-question.module').then( m => m.AskQuestionPageModule)
       }
     ]
   }
