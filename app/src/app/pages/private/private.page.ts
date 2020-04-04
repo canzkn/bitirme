@@ -46,6 +46,11 @@ export class PrivatePage implements OnInit {
       icon: 'create-sharp'
     },
     {
+      title: 'Mesaj Kutusu',
+      url: '/board/message-box',
+      icon: 'chatbubbles-sharp'
+    },
+    {
       title: 'Çıkış Yap',
       url: '/board/tags',
       icon: 'log-out-sharp'

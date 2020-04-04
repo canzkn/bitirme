@@ -39,6 +39,14 @@ const routes: Routes = [
       {
         path: 'show-question',
         loadChildren: () => import('./show-question/show-question.module').then( m => m.ShowQuestionPageModule)
+      },
+      {
+        path: 'message-box',
+        loadChildren: () => import('./message-box/message-box.module').then( m => m.MessageBoxPageModule)
+      },
+      {
+        path: 'message',
+        loadChildren: () => import('./message/message.module').then( m => m.MessagePageModule)
       }
     ]
   }
