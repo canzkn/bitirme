@@ -52,7 +52,7 @@ export class PrivatePage implements OnInit {
     },
     {
       title: 'Çıkış Yap',
-      url: '/board/tags',
+      url: '/login',
       icon: 'log-out-sharp'
     }
   ];
