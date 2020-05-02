@@ -2,11 +2,17 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { PrivatePage } from './private.page';
+import { PrivateGuard } from '../../guards/private/private.guard'
+import { ResolverService } from '../../services/resolver/resolver.service'
 
 const routes: Routes = [
   {
     path: 'board',
     component: PrivatePage,
+    canActivate: [PrivateGuard],
+    resolve: {
+      userData: ResolverService
+    },
     children: [
       {
         path: 'home',

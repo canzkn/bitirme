@@ -2,11 +2,13 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { PublicPage } from './public.page';
+import { PublicGuard } from '../../guards/public/public.guard'
 
 const routes: Routes = [
   {
     path: '',
     component: PublicPage,
+    canActivate: [PublicGuard],
     children: [
       {
         path: '',
