@@ -22,6 +22,7 @@ $password   = htmlspecialchars(strip_tags($data->password));
 $email      = htmlspecialchars(strip_tags($data->email));
 $date       = date("Y-m-d H:i:s");
 
+
 // Call the related class
 include_once 'model/Functions.php';
 include_once 'model/core/User.php';
@@ -42,7 +43,7 @@ $create_code = $auth->create();
 if($create_code == 0)
 {
     echo json_encode(array(
-        'message' => 'USER_CREATE_FAILED'
+        'message' => 'USER_REGISTRATION_FAILED'
     ));
 }
 
@@ -50,7 +51,7 @@ if($create_code == 0)
 if($create_code == 1)
 {
     echo json_encode(array(
-        'message' => 'USER_CREATE_SUCCESS'
+        'message' => 'USER_REGISTRATION_SUCCESS'
     ));
 }
 
@@ -58,7 +59,7 @@ if($create_code == 1)
 if($create_code == 2)
 {
     echo json_encode(array(
-        'message' => 'DO_NOT_LEAVE_IN_BLANK'
+        'message' => 'DO_NOT_LEAVE_EMPTY_SPACE'
     ));
 }
 // AVAILABLE_CODE
@@ -66,6 +67,14 @@ if($create_code == 3)
 {
     echo json_encode(array(
         'message' => 'USER_AVAILABLE_IN_DB'
+    ));
+}
+
+// INVALID_EMAIL_FORMAT
+if($create_code == 6)
+{
+    echo json_encode(array(
+        'message' => 'INVALID_EMAIL_FORMAT'
     ));
 }
 

@@ -15,6 +15,7 @@ class Authentication extends Core\User {
     private $AVAILABLE_CODE = 3;
     private $ALREADY_LOGGED = 4;
     private $TOKEN_CREATE_FAILED = 5;
+    private $INVALID_EMAIL_FORMAT = 6;
 
     // Access Token
     private $token;
@@ -64,9 +65,14 @@ class Authentication extends Core\User {
     public function create()
     {
         // check blank fields.
-        if( !$this->getUserName() || !$this->getPassword() || !$this->getEmail() )
+        if( !$this->getUsername() || !$this->getPassword() || !$this->getEmail() )
         {
             return $this->BLANK_CODE;
+        }
+
+        if(!Functions::checkEmail($this->getUEmail()))
+        {
+            return $this->INVALID_EMAIL_FORMAT;
         }
        
         // is there a user in the db?
@@ -74,7 +80,7 @@ class Authentication extends Core\User {
         // prepare statement
         $statement = $this->conn->prepare($query);
         // bind parameters
-        $statement->bindParam(':Username', $this->getUserName());
+        $statement->bindParam(':Username', $this->getUsername());
         $statement->bindParam(':Email', $this->getEmail());
         // execute query
         $statement->execute();
@@ -92,7 +98,7 @@ class Authentication extends Core\User {
             $statement = $this->conn->prepare($query);
                 
             // bind parameters
-            $statement->bindParam(':Username', $this->getUserName());
+            $statement->bindParam(':Username', $this->getUsername());
             $statement->bindParam(':Email', $this->getEmail());
             $statement->bindParam(':RegisterDate', $this->getRegisterDate());
             $statement->bindParam(':Password', Functions::hashPassword($this->getPassword()));
@@ -113,7 +119,7 @@ class Authentication extends Core\User {
     public function login()
     {
         // check blank fields.
-        if(!$this->getUserName() || !$this->getPassword())
+        if(!$this->getUsername() || !$this->getPassword())
         {
             return $this->BLANK_CODE;
         }
@@ -124,27 +130,31 @@ class Authentication extends Core\User {
         }
         // login
         $query = 'SELECT COUNT(*) as result FROM ' . $this->table . ' WHERE (Username = :Username OR Email = :Email) AND Password = :Password LIMIT 1';
+        
+        
         // prepare statement
         $statement = $this->conn->prepare($query);
         // bind parameters
-        $statement->bindParam(':Username', $this->getUserName());
-        $statement->bindParam(':Email', $this->getUserName());
+        $statement->bindParam(':Username', $this->getUsername());
+        $statement->bindParam(':Email', $this->getUsername());
         $statement->bindParam(':Password', Functions::hashPassword($this->getPassword()));
         // execute query
         $statement->execute();
         $row = $statement->fetch(PDO::FETCH_ASSOC);
+        
         if($row['result'] > 0)
         {
             // Get User ID
-            $query = 'SELECT UserID FROM ' . $this->table . ' WHERE Username = :Username LIMIT 1';
+            $query = 'SELECT UserID FROM ' . $this->table . ' WHERE Username = :Username OR Email = :Email LIMIT 1';
             // prepare statement
             $statement = $this->conn->prepare($query);
             // bind parameters
-            $statement->bindParam(':Username', $this->getUserName());
+            $statement->bindParam(':Username', $this->getUsername());
+            $statement->bindParam(':Email', $this->getUsername());
             // execute query
             $statement->execute();
             $row = $statement->fetch(PDO::FETCH_ASSOC);
-
+            
             // set user id
             $this->setUserID($row['UserID']);
 
@@ -215,5 +225,41 @@ class Authentication extends Core\User {
         }
         
         return $this->FAILED_CODE;
+    }
+
+    // Get Username from Database
+    public function getDBUsername()
+    {
+        // query string
+        $query = 'SELECT Username FROM ' . $this->table . ' WHERE UserID = :UserID';
+
+        // prepare statement
+        $statement = $this->conn->prepare($query);
+                
+        // bind parameters
+        $statement->bindParam(':UserID', $this->getUserID());
+        // execute query
+        $statement->execute();
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
+        
+        return $row['Username'];
+    }
+
+    // Get Email from Database
+    public function getDBEmail()
+    {
+        // query string
+        $query = 'SELECT Email FROM ' . $this->table . ' WHERE UserID = :UserID';
+
+        // prepare statement
+        $statement = $this->conn->prepare($query);
+                
+        // bind parameters
+        $statement->bindParam(':UserID', $this->getUserID());
+        // execute query
+        $statement->execute();
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
+        
+        return $row['Email'];
     }
 }

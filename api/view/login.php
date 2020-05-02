@@ -45,7 +45,8 @@ if($isLogin == 1)
         'message' => 'LOGIN_SUCCESS',
         'data'    => [
             'UserID'       => $auth->getUserID(),
-            'Username'     => $username,
+            'Username'     => $auth->getDBUsername(),
+            'Email'        => $auth->getDBEmail(),
             'Token'        => $auth->getAccessToken()
         ]
     ));
