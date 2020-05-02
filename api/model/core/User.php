@@ -23,6 +23,7 @@ class User {
     private $LastSeen;
     private $ProfileViews;
     private $AvatarImage;
+    private $CoverImage;
 
     /**
      * Get the value of UserID
@@ -240,6 +241,26 @@ class User {
     public function setAvatarImage($AvatarImage)
     {
         $this->AvatarImage = $AvatarImage;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of CoverImage
+     */ 
+    public function getCoverImage()
+    {
+        return $this->CoverImage;
+    }
+
+    /**
+     * Set the value of CoverImage
+     *
+     * @return  self
+     */ 
+    public function setCoverImage($CoverImage)
+    {
+        $this->CoverImage = $CoverImage;
 
         return $this;
     }

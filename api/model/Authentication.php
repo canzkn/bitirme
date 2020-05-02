@@ -42,4 +42,178 @@ class Authentication extends Core\User {
     {
         return $this->token;
     }
+
+    // Delete previous tokens
+    public function deletePreviousTokens()
+    {
+        $query = 'DELETE FROM tokens WHERE TokenUserID = :TokenUserID';
+        // prepare statement
+        $statement = $this->conn->prepare($query);
+        // bind parameters
+        $statement->bindParam(':TokenUserID', $this->getUserID());
+        // execute
+        if($statement->execute())
+        {
+            return true;
+        }
+        
+        return false;
+    }
+
+    // Create user
+    public function create()
+    {
+        // check blank fields.
+        if( !$this->getUserName() || !$this->getPassword() || !$this->getEmail() )
+        {
+            return $this->BLANK_CODE;
+        }
+       
+        // is there a user in the db?
+        $query = 'SELECT COUNT(*) as inDb FROM ' . $this->table . ' WHERE Username = :Username OR Email = :Email LIMIT 1';
+        // prepare statement
+        $statement = $this->conn->prepare($query);
+        // bind parameters
+        $statement->bindParam(':Username', $this->getUserName());
+        $statement->bindParam(':Email', $this->getEmail());
+        // execute query
+        $statement->execute();
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
+        if($row['inDb'])
+        {
+            return $this->AVAILABLE_CODE;
+        }
+        else
+        {
+            // create the user
+            $query = 'INSERT INTO '. $this->table .' (Username, Email, Password, RegisterDate) VALUES (:Username, :Email, :Password, :RegisterDate)';
+            
+            // prepare statement
+            $statement = $this->conn->prepare($query);
+                
+            // bind parameters
+            $statement->bindParam(':Username', $this->getUserName());
+            $statement->bindParam(':Email', $this->getEmail());
+            $statement->bindParam(':RegisterDate', $this->getRegisterDate());
+            $statement->bindParam(':Password', Functions::hashPassword($this->getPassword()));
+            // execute query
+            if($statement->execute())
+            {
+                return $this->SUCCESS_CODE;
+            }
+            else
+            {
+                return $this->FAILED_CODE;
+            }
+        }
+        return $this;
+    }
+
+    // Login
+    public function login()
+    {
+        // check blank fields.
+        if(!$this->getUserName() || !$this->getPassword())
+        {
+            return $this->BLANK_CODE;
+        }
+        // check login status and valid token.
+        if($this->checkLogin())
+        {
+            return $this->ALREADY_LOGGED;
+        }
+        // login
+        $query = 'SELECT COUNT(*) as result FROM ' . $this->table . ' WHERE (Username = :Username OR Email = :Email) AND Password = :Password LIMIT 1';
+        // prepare statement
+        $statement = $this->conn->prepare($query);
+        // bind parameters
+        $statement->bindParam(':Username', $this->getUserName());
+        $statement->bindParam(':Email', $this->getUserName());
+        $statement->bindParam(':Password', Functions::hashPassword($this->getPassword()));
+        // execute query
+        $statement->execute();
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
+        if($row['result'] > 0)
+        {
+            // Get User ID
+            $query = 'SELECT UserID FROM ' . $this->table . ' WHERE Username = :Username LIMIT 1';
+            // prepare statement
+            $statement = $this->conn->prepare($query);
+            // bind parameters
+            $statement->bindParam(':Username', $this->getUserName());
+            // execute query
+            $statement->execute();
+            $row = $statement->fetch(PDO::FETCH_ASSOC);
+
+            // set user id
+            $this->setUserID($row['UserID']);
+
+            // set token
+            $token = Functions::createToken();
+            $tokenEndTime = 3600 * 24; // seconds 
+            $tokenEndDate = date('Y-m-d H:i:s', time() + $tokenEndTime);
+            $this->setAccessToken($token);
+
+            // delete previous tokens
+            $this->deletePreviousTokens();
+
+            // insert token to database
+            $query = 'INSERT INTO tokens (Token, TokenUserID, TokenEndDate) VALUES (:Token, :TokenUserID, :TokenEndDate)';
+            // prepare statement
+            $statement = $this->conn->prepare($query);
+            // bind parameters
+            $statement->bindParam(':Token', $this->getAccessToken());
+            $statement->bindParam(':TokenUserID', $this->getUserID());
+            $statement->bindParam(':TokenEndDate', $tokenEndDate);
+            // execute query
+            if($statement->execute())
+            {
+                return $this->SUCCESS_CODE;
+            }
+            else
+            {
+                return $this->TOKEN_CREATE_FAILED;
+            }
+        }
+
+        return $this->FAILED_CODE;
+    }
+
+    // Check Login
+    public function checkLogin()
+    {
+        if($this->getAccessToken())
+        {
+            // check token end date
+            $query = 'SELECT TokenEndDate FROM tokens WHERE TokenUserID = :TokenUserID AND Token = :Token';
+            // prepare statement
+            $statement = $this->conn->prepare($query);
+                
+            // bind parameters
+            $statement->bindParam(':TokenUserID', $this->getUserID());
+            $statement->bindParam(':Token', $this->getAccessToken());
+            // execute query
+            $statement->execute();
+            $row = $statement->fetch(PDO::FETCH_ASSOC);
+            $TokenEndDate = $row['TokenEndDate'];
+            if(time() > strtotime($TokenEndDate))
+            {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    // Logout
+    public function logout()
+    {
+        // delete previous tokens
+        if($this->deletePreviousTokens())
+        {
+            return $this->SUCCESS_CODE;
+        }
+        
+        return $this->FAILED_CODE;
+    }
 }
