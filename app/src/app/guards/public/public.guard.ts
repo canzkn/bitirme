@@ -12,7 +12,14 @@ export class PublicGuard implements CanActivate {
     return new Promise(resolve => {
       this.storageService.get(this.constantService.AUTH).then(res => {
         if(res) {
-          this.router.navigate(['board/home'])
+          if(res.data.isInterest == 1)
+          {
+            this.router.navigate(['board/home']);
+          }
+          else
+          {
+            this.router.navigate(['board/interest']);
+          }
           resolve(false)
         }
         else
