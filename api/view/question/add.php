@@ -33,11 +33,11 @@ $response_code = $question
     ->setTags($tags)
     ->addQuestion();
 
-if($response_code == 1)
+if($response_code > 0)
 {
-    
     echo json_encode(array(
-        'message' => 'ADD_QUESTION_SUCCESS'
+        'message'       => 'ADD_QUESTION_SUCCESS',
+        'QuestionID'    => $response_code
     ));
 }
 else

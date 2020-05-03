@@ -57,7 +57,7 @@ class QuestionOperations extends Core\Question {
                 $statement->execute();
             }
 
-            return $this->SUCCESS_CODE;
+            return $LastQuestionID;
         }
         else
         {
