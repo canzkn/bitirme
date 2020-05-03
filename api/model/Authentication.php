@@ -262,4 +262,22 @@ class Authentication extends Core\User {
         
         return $row['Email'];
     }
+
+    // is Interest Filled?
+    public function isInterest()
+    {
+        // query string
+        $query = 'SELECT isInterest FROM ' . $this->table . ' WHERE UserID = :UserID';
+
+        // prepare statement
+        $statement = $this->conn->prepare($query);
+                
+        // bind parameters
+        $statement->bindParam(':UserID', $this->getUserID());
+        // execute query
+        $statement->execute();
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
+        
+        return $row['isInterest'];
+    }
 }

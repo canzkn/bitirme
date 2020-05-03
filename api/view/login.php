@@ -47,7 +47,8 @@ if($isLogin == 1)
             'UserID'       => $auth->getUserID(),
             'Username'     => $auth->getDBUsername(),
             'Email'        => $auth->getDBEmail(),
-            'Token'        => $auth->getAccessToken()
+            'Token'        => $auth->getAccessToken(),
+            'isInterest'        => $auth->isInterest(),
         ]
     ));
 }
