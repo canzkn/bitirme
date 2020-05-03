@@ -18,17 +18,17 @@
       </ion-list-header>
       <ion-item>
         <ion-label position="stacked">Başlık <ion-text color="danger">*</ion-text></ion-label>
-        <ion-input required type="text" placeholder="Sorununuzu kısa bir biçimde özetleyin."></ion-input>
+        <ion-input required type="text" placeholder="Sorununuzu kısa bir biçimde özetleyin." [(ngModel)]="postData.title"></ion-input>
       </ion-item>
 
       <ion-item>
-        <quill-editor [(ngModel)]="htmlText"
+        <quill-editor [(ngModel)]="postData.content"
         placeholder="Lütfen sorununuzu buraya yazınız."></quill-editor>
       </ion-item>
       
       <ion-item>
         <ion-label position="stacked">Etiket <ion-text color="danger">*</ion-text></ion-label>
-        <tag-input  
+        <tag-input  [(ngModel)]="postData.tags"
               [placeholder]="'yeni bir etiket girin'"
               [secondaryPlaceholder]="'örneğin: javascript'"
               [onlyFromAutocomplete]="true"
@@ -41,7 +41,7 @@
     </ion-list>
 
     <div class="ion-padding">
-      <ion-button expand="block" class="ion-no-margin" (click)="deneme()">Sorunuzu Gönderin</ion-button>
+      <ion-button expand="block" class="ion-no-margin" (click)="addQuestion()">Sorunuzu Gönderin</ion-button>
     </div>
   <!--#inputs -->
 
