@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="dark">
     <ion-buttons slot="end">
-      <ion-button>
+      <ion-button (click) = "submit()" disabled="{{buttonDisable}}">
         <ion-icon name="arrow-forward-sharp" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -13,9 +13,13 @@
 <ion-content>
   <ion-searchbar mode="ios" animated placeholder="Arama..." (ionChange)="filterText($event)"></ion-searchbar>
   <ion-list>
-    <ion-item *ngFor="let item of tags | tagFilter : textFilter">
+    <ion-item *ngFor="let i = index; let item of tags | tagFilter : textFilter">
       {{ item.TagName }}
-      <ion-button color="dark" slot="end" mode="ios">
+      <ion-button *ngIf="isSelect(item.TagID)" color="danger" slot="end" mode="ios" (click) = "unselect(item.TagID)">
+        <ion-icon slot="icon-only" name="remove-sharp"></ion-icon>
+      </ion-button>
+
+      <ion-button *ngIf="!isSelect(item.TagID)" color="dark" slot="end" mode="ios" (click) = "select(item.TagID)">
         <ion-icon slot="icon-only" name="add-sharp"></ion-icon>
       </ion-button>
     </ion-item>
