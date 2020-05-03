@@ -53,6 +53,10 @@ const routes: Routes = [
       {
         path: 'message',
         loadChildren: () => import('./message/message.module').then( m => m.MessagePageModule)
+      },
+      {
+        path: 'interest',
+        loadChildren: () => import('./interest/interest.module').then( m => m.InterestPageModule)
       }
     ]
   }

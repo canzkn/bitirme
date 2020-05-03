@@ -1,6 +1,6 @@
 <ion-content>
   <ion-split-pane contentId="main-content">
-    <ion-menu contentId="main-content" type="overlay">
+    <ion-menu contentId="main-content" type="overlay" *ngIf="!isInterestPage()">
       <ion-header>
         <!-- kullanıcı profil alanı -->
         <div class="usercp">
@@ -45,7 +45,7 @@
     </ion-menu>
     <ion-router-outlet id="main-content">
       <ion-tabs>
-        <ion-tab-bar slot="bottom">
+        <ion-tab-bar slot="bottom" *ngIf="!isInterestPage()">
             <ion-tab-button tab="home">
                 <ion-icon name="home"></ion-icon>
                 <ion-label>Akış</ion-label>

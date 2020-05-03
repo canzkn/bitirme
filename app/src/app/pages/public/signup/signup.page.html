@@ -21,31 +21,31 @@
       <ion-list lines="none" class="bg-transparent ion-no-margin ion-no-padding">
         <!-- text input -->
         <ion-item color="none" lines="none" class="ion-no-margin ion-no-padding">
-          <ion-input required type="text" placeholder="Kullanıcı Adı"></ion-input>
+          <ion-input required type="text" placeholder="Kullanıcı Adı" [(ngModel)]="formData.username" [ngModelOptions]="{standalone: true}" ></ion-input>
         </ion-item>
         <!--#text input -->
 
         <!-- text input -->
         <ion-item color="none" lines="none" class="ion-no-margin ion-no-padding">
-          <ion-input required type="text" placeholder="E-Posta"></ion-input>
+          <ion-input required type="text" placeholder="E-Posta" [(ngModel)]="formData.email" [ngModelOptions]="{standalone: true}"></ion-input>
         </ion-item>
         <!--#text input -->
 
         <!-- text input -->
         <ion-item color="none" lines="none" class="ion-no-margin ion-no-padding">
-          <ion-input required type="password" placeholder="Şifre"></ion-input>
+          <ion-input required type="password" placeholder="Şifre" [(ngModel)]="formData.password" [ngModelOptions]="{standalone: true}"></ion-input>
         </ion-item>
         <!--#text input -->
 
         <!-- text input -->
         <ion-item color="none" lines="none" class="ion-no-margin ion-no-padding">
-          <ion-input required type="password" placeholder="Şifrenizi Onaylayın"></ion-input>
+          <ion-input required type="password" placeholder="Şifrenizi Onaylayın" [(ngModel)]="formData.passwordConfirm" [ngModelOptions]="{standalone: true}"></ion-input>
         </ion-item>
         <!--#text input -->
 
         <!-- checkbox -->
         <ion-item mode="ios" color="none" lines="none" class="ion-no-margin ion-no-padding">
-          <ion-checkbox color="primary" checked slot="start" mode="md"></ion-checkbox>
+          <ion-checkbox color="primary" checked slot="start" mode="md" [(ngModel)]="formData.userAggrement" [ngModelOptions]="{standalone: true}"></ion-checkbox>
           <ion-label class="user-agreement">Kullanıcı Sözleşmesi'ni okudum ve onaylıyorum.</ion-label>
         </ion-item>
         <!--#checkbox -->
@@ -53,7 +53,7 @@
 
       <!-- button -->
       <div class="register-button">
-        <ion-button expand="block" color="primary" mode="ios" routerLink="/board/home">Kayıt Ol</ion-button>
+        <ion-button expand="block" color="primary" mode="ios" (click) = "signup()">Kayıt Ol</ion-button>
       </div>
       <!--#button -->
 

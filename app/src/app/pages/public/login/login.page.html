@@ -26,10 +26,10 @@
             
             <!-- text input -->
             <ion-item color="none" lines="none" class="ion-no-margin ion-no-padding">
-              <ion-input required type="text" placeholder="Kullanıcı Adı"></ion-input>
+              <ion-input required type="text" placeholder="Kullanıcı Adı veya E-Posta" [(ngModel)]="formData.username" [ngModelOptions]="{standalone: true}"></ion-input>
             </ion-item>
             <ion-item color="none" lines="none" class="ion-no-margin ion-no-padding">
-              <ion-input required type="password" placeholder="Şifre"></ion-input>
+              <ion-input required type="password" placeholder="Şifre" [(ngModel)]="formData.password" [ngModelOptions]="{standalone: true}"></ion-input>
             </ion-item>
             <!--#text input -->
 
@@ -57,7 +57,7 @@
             <!-- login button -->
             <ion-item color="none" lines="none" class="ion-no-margin ion-no-padding ion-text-center">
               <ion-label class="loginButton">
-                <ion-button color="light" class="loginButton" routerLink="/board/home">
+                <ion-button color="light" class="loginButton" (click) = "login()">
                   <ion-icon slot="icon-only" name="arrow-forward"></ion-icon>
                 </ion-button>
               </ion-label>
