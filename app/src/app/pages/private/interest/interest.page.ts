@@ -5,6 +5,7 @@ import { ConstantService } from '../../../services/constant/constant.service'
 import { AuthenticationService } from '../../../services/authenticaton/authentication.service';
 import { ProfileService } from '../../../services/profile/profile.service';
 import { Router } from '@angular/router';
+import { StorageService } from '../../../services/storage/storage.service';
 @Component({
   selector: 'app-interest',
   templateUrl: './interest.page.html',
@@ -21,7 +22,8 @@ export class InterestPage implements OnInit {
     private constantService : ConstantService,
     private auth : AuthenticationService,
     private pService : ProfileService,
-    private router: Router) { }
+    private router: Router,
+    private storageService : StorageService) { }
 
   ngOnInit() {
     this.http.get<Tag[]>(this.constantService.API_URL + 'tags').subscribe(res => {
@@ -78,6 +80,8 @@ export class InterestPage implements OnInit {
         this.pService.addInterest(res.data, JSON.stringify(postObj)).subscribe(response => {
           if(response.message == "ADD_INTEREST_SUCCESS")
           {
+            res.data.isInterest = 1;
+            this.storageService.store(this.constantService.AUTH, res)
             this.router.navigate(['board/home']);
           }
 
