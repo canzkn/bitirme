@@ -80,6 +80,11 @@ export class InterestPage implements OnInit {
           {
             this.router.navigate(['board/home']);
           }
+
+          if(response.message == "AUTHORIZATION_FAILED")
+          {
+            this.auth.logout();
+          }
         })
       })
     }
