@@ -14,7 +14,7 @@ class QuestionOperations extends Core\Question {
 
     // DB Stuff
     private $conn;
-    private $tables = ['questions', 'question_tags'];
+    private $tables = ['questions', 'question_tags', 'users', 'answers'];
 
     // Constructor with DB
     public function __construct($db) 
@@ -26,7 +26,7 @@ class QuestionOperations extends Core\Question {
     public function addQuestion()
     {
         // question query string
-        $query = 'INSERT INTO '. $this->tables[0] .' (Title, Content, CreateDate, UserID) VALUES (:Title, :Content, :CreateDate, :UserID)';
+        $query = 'INSERT INTO '. $this->tables[0] .' (Title, Content, CreateDate, UpdateDate, UserID) VALUES (:Title, :Content, :CreateDate, :UpdateDate, :UserID)';
         // prepare statement
         $statement = $this->conn->prepare($query);
             
@@ -34,6 +34,7 @@ class QuestionOperations extends Core\Question {
         $statement->bindParam(':Title', $this->getTitle());
         $statement->bindParam(':Content', $this->getContent());
         $statement->bindParam(':CreateDate', $this->getCreateDate());
+        $statement->bindParam(':UpdateDate', $this->getCreateDate());
         $statement->bindParam(':UserID', $this->getUserID());
         // execute query
         if($statement->execute())
@@ -63,5 +64,128 @@ class QuestionOperations extends Core\Question {
         {
             return $this->FAILED_CODE;
         }
+    }
+
+    // Get Last Questions
+    public function getLastQuestions($filter, $page_id)
+    {
+        // question count per page
+        $perPage = 10;
+        
+        if($filter == "hot")
+        {
+            // get total data
+            $totalDataQuery = 'SELECT COUNT(*) FROM ' . $this->tables[0] . ' ORDER BY UpdateDate DESC';
+
+            // Get Hot Question Query
+            $QuestionQuery = 'SELECT * FROM ' . $this->tables[0] . ' ORDER BY UpdateDate DESC';
+        }
+
+        if($filter == "week")
+        {
+            // get total data
+            $totalDataQuery = 'SELECT COUNT(*) FROM ' . $this->tables[0] . '  WHERE UpdateDate > DATE_SUB(NOW(), INTERVAL 1 WEEK) ORDER BY UpdateDate DESC';
+
+            // Get Hot Question Query
+            $QuestionQuery = 'SELECT * FROM ' . $this->tables[0] . '  WHERE UpdateDate > DATE_SUB(NOW(), INTERVAL 1 WEEK) ORDER BY UpdateDate DESC';
+        }
+
+        if($filter == "month")
+        {
+            // get total data
+            $totalDataQuery = 'SELECT COUNT(*) FROM ' . $this->tables[0] . '  WHERE UpdateDate > DATE_SUB(NOW(), INTERVAL 1 MONTH) ORDER BY UpdateDate DESC';
+
+            // Get Hot Question Query
+            $QuestionQuery = 'SELECT * FROM ' . $this->tables[0] . '  WHERE UpdateDate > DATE_SUB(NOW(), INTERVAL 1 MONTH) ORDER BY UpdateDate DESC';
+        }
+
+
+        // prepare statement
+        $statement = $this->conn->prepare($totalDataQuery);
+
+        // execute query
+        $statement->execute();
+        $total_data = $statement->fetchColumn();
+
+        // total page
+        $total_page = ceil($total_data/$perPage);
+
+        // current page
+        $now = ($page_id * $perPage - $perPage);
+
+        // prepare statement
+        $statement = $this->conn->prepare($QuestionQuery . ' LIMIT ' . $now .',' .$perPage);
+        // execute query
+        $statement->execute();
+        $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        for($i = 0; $i < count($row); $i++)
+        {
+            // get tags 
+            $query = 'SELECT * FROM ' . $this->tables[1] . ' INNER JOIN tags ON question_tags.TagID = tags.TagID WHERE question_tags.QuestionID = :QuestionID';
+            // prepare statement
+            $statement = $this->conn->prepare($query);
+            // bind param
+            $statement->bindParam(':QuestionID', $row[$i]['QuestionID']);
+            // execute query
+            $statement->execute();
+            $tag_rows = $statement->fetchAll(PDO::FETCH_ASSOC);
+            $row[$i]['Tags'] = $tag_rows;
+
+            // insert username
+            $query = 'SELECT Username FROM ' . $this->tables[2] . ' WHERE UserID = :UserID LIMIT 1';
+            // prepare statement
+            $statement = $this->conn->prepare($query);
+
+            if($row[$i]['AnswerUserID'])
+            {
+                // answered
+
+                // bind param
+                $statement->bindParam(':UserID', $row[$i]['AnswerUserID']);
+                // execute query
+                $statement->execute();
+                $username = $statement->fetchColumn();
+                // set username
+                $row[$i]['Username'] = $username;
+                // set post date
+                $row[$i]['PostDate'] = Functions::time_convert($row[$i]['UpdateDate']);
+                $row[$i]['PostType'] = "cevaplandı";
+            }
+            else
+            {
+                // asked
+                
+                // bind param
+                $statement->bindParam(':UserID', $row[$i]['UserID']);
+                // execute query
+                $statement->execute();
+                $username = $statement->fetchColumn();
+                // set username
+                $row[$i]['Username'] = $username;
+                // set post date
+                $row[$i]['PostDate'] = Functions::time_convert($row[$i]['CreateDate']);
+                $row[$i]['PostType'] = "soruldu";
+            }
+
+            $row[$i]['Content'] = htmlspecialchars(substr(strip_tags($row[$i]['Content']), 0, 296));
+
+            // calculate answer count
+            $query = 'SELECT COUNT(*) FROM ' . $this->tables[3] . ' WHERE QuestionID = :QuestionID LIMIT 1';
+            // prepare statement
+            $statement = $this->conn->prepare($query);
+            // bind param
+            $statement->bindParam(':QuestionID', $row[$i]['QuestionID']);
+            // execute query
+            $statement->execute();
+            $row[$i]['AnswerCount'] = $statement->fetchColumn();
+
+        }
+
+        $return_data = array();
+        $return_data['total_page'] = $total_page;
+        $return_data['data'] = $row;
+
+        return $return_data;
     }
 }

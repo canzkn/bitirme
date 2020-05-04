@@ -20,4 +20,12 @@ export class QuestionService {
       headers: {'Authorization': 'UserID='+ auth.UserID +'; token='+ auth.Token +';'}
     })
   }
+
+  // Get Last Questions
+  getLastQuestions(auth, post_data) : Observable<any>
+  {
+    return this.http.post(this.constantService.API_URL + 'question/get_last', post_data, {
+      headers: {'Authorization': 'UserID='+ auth.UserID +'; token='+ auth.Token +';'}
+    })
+  } 
 }

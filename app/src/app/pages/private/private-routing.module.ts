@@ -43,7 +43,7 @@ const routes: Routes = [
         loadChildren: () => import('./ask-question/ask-question.module').then( m => m.AskQuestionPageModule)
       },
       {
-        path: 'show-question',
+        path: 'show-question/:id',
         loadChildren: () => import('./show-question/show-question.module').then( m => m.ShowQuestionPageModule)
       },
       {
