@@ -84,13 +84,6 @@ export class HomePage {
     this.loadQuestions(this.defaultSegment, this.pageId)
   }
 
-  // show question
-  showQuestion(QuestionID)
-  {
-    //console.log(QuestionID)
-    // TODO : buradan soruya yönlenecek.
-  }
-
   // load more data
   loadMore(event)
   {
