@@ -16,7 +16,7 @@ export class HomePage {
   pageId = 1;
   questions = [];
   defaultSegment = 'hot';
-  currentEvent = null;
+  currentEvent;
 
   constructor(
     private http: HttpClient,
@@ -31,9 +31,12 @@ export class HomePage {
 
   ionViewWillLeave()
   {
-    //console.log("ionViewWillLeave")
-    //console.log(this.currentEvent)
-    this.currentEvent.target.disabled = false
+    console.log("ionViewWillLeave")
+    if(this.currentEvent)
+    {
+      // console.log(this.currentEvent)
+      this.currentEvent.target.disabled = false
+    }
     this._userDataListener.unsubscribe()
     this.questions = [];
     this.pageId = 1;
@@ -48,7 +51,7 @@ export class HomePage {
       }
 
       this._userDataListener = this.auth.userData$.subscribe(res => {
-        //console.log(res)
+        // console.log(res)
         this.qService.getLastQuestions(res.data, JSON.stringify(postData)).subscribe(response => {
           if(response.message == "AUTHORIZATION_FAILED")
           {
@@ -66,7 +69,7 @@ export class HomePage {
               }
             }
 
-            //console.log(response)
+            // console.log(response)
           }
         })
       })
