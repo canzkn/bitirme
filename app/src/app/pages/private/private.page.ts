@@ -12,7 +12,7 @@ export class PrivatePage implements OnInit {
 
   public appPages = [
     {
-      title: 'Son Cevaplanan Sorular',
+      title: 'Akış',
       url: '/board/home',
       icon: 'globe-sharp',
     },

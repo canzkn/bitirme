@@ -45,6 +45,7 @@
 .question-tags
 {
     float:left;
+    width: 100%;
     margin-left:-5px;
     margin-top:-10px;
     ion-chip {
@@ -163,4 +164,13 @@ $foundation-icon-theme: (
 // apply theme to the delete icon
 ::ng-deep tag-input .ng2-tag-input.foundation-theme tag delete-icon {
     @include icon-theme($foundation-icon-theme);
+}
+
+@media only screen and (max-width: 634px)
+{
+    .question-asked-by 
+    {
+        float:left !important;
+        padding-top: 10px;
+    }
 }

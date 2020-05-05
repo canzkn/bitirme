@@ -28,4 +28,12 @@ export class QuestionService {
       headers: {'Authorization': 'UserID='+ auth.UserID +'; token='+ auth.Token +';'}
     })
   } 
+
+  // Get All Questions
+  getAllQuestions(auth, post_data) : Observable<any>
+  {
+    return this.http.post(this.constantService.API_URL + 'question/get_all', post_data, {
+      headers: {'Authorization': 'UserID='+ auth.UserID +'; token='+ auth.Token +';'}
+    })
+  } 
 }

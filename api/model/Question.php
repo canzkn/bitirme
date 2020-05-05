@@ -119,6 +119,86 @@ class QuestionOperations extends Core\Question {
         $statement->execute();
         $row = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+        $return_data = array();
+        $return_data['total_page'] = $total_page;
+        $return_data['data'] = $this->dataManipulation($row);
+
+        return $return_data;
+    }
+
+    // Get All Question
+    public function getAllQuestions($type, $filter, $page_id)
+    {
+        // question count per page
+        $perPage = 10;
+
+        // get new
+        if($type == "new")
+        {
+             // get total data
+             $totalDataQuery = 'SELECT COUNT(*) FROM ' . $this->tables[0] . ' ORDER BY CreateDate DESC';
+
+             // Get New Question Query
+             $QuestionQuery = 'SELECT * FROM ' . $this->tables[0] . ' ORDER BY CreateDate DESC';
+        }
+
+        // get active
+        if($type == "active")
+        {
+             // get total data
+             $totalDataQuery = 'SELECT COUNT(*) FROM ' . $this->tables[0] . ' ORDER BY UpdateDate DESC';
+
+             // Get New Question Query
+             $QuestionQuery = 'SELECT * FROM ' . $this->tables[0] . ' ORDER BY UpdateDate DESC';
+        }
+
+        // get unanswered
+        if($type == "notanswer")
+        {
+             // get total data
+             $totalDataQuery = 'SELECT COUNT(*) FROM ' . $this->tables[0] . ' WHERE AnswerUserID = 0 ORDER BY Reputation DESC';
+
+             // Get New Question Query
+             $QuestionQuery = 'SELECT * FROM ' . $this->tables[0] . ' WHERE AnswerUserID = 0 ORDER BY Reputation DESC';
+        }
+
+        if($type == "special")
+        {
+            /**
+             * TODO : filtreleme işlemleri bu alanda yapılacak.
+             */
+        }
+
+        // prepare statement
+        $statement = $this->conn->prepare($totalDataQuery);
+
+        // execute query
+        $statement->execute();
+        $total_data = $statement->fetchColumn();
+
+        // total page
+        $total_page = ceil($total_data/$perPage);
+
+        // current page
+        $now = ($page_id * $perPage - $perPage);
+
+        // prepare statement
+        $statement = $this->conn->prepare($QuestionQuery . ' LIMIT ' . $now .',' .$perPage);
+        // execute query
+        $statement->execute();
+        $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $return_data = array();
+        $return_data['total_page'] = $total_page;
+        $return_data['total_data'] = $total_data;
+        $return_data['data'] = $this->dataManipulation($row);
+
+        return $return_data;
+    }
+
+    // Data Manipulation
+    public function dataManipulation($row)
+    {
         for($i = 0; $i < count($row); $i++)
         {
             // get tags 
@@ -179,13 +259,8 @@ class QuestionOperations extends Core\Question {
             // execute query
             $statement->execute();
             $row[$i]['AnswerCount'] = $statement->fetchColumn();
-
         }
 
-        $return_data = array();
-        $return_data['total_page'] = $total_page;
-        $return_data['data'] = $row;
-
-        return $return_data;
+        return $row;
     }
 }

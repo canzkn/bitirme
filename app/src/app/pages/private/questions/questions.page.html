@@ -21,7 +21,7 @@
         </ion-col>
         <ion-col class="ion-align-self-center">
           <div class="ion-text-end" style="margin-right:8px">
-            <ion-button color="primary" size="small">Bir Soru Sor</ion-button>
+            <ion-button color="primary" size="small" routerLink="/board/ask-question">Bir Soru Sor</ion-button>
             <ion-button color="medium" size="small" (click)="showFilter()">Filtrele</ion-button>
           </div>
         </ion-col>
@@ -31,11 +31,11 @@
           <div class="ion-text-center"><b>Durum</b></div>
           <div class="filter-items">
             <div class="filter-item">
-              <div class="filter-item-checkbox"><ion-checkbox mode="md"></ion-checkbox></div>
+              <div class="filter-item-checkbox"><ion-checkbox mode="md" [(ngModel)] = "postData.filter.unanswered"></ion-checkbox></div>
               <div class="filter-item-text">Cevaplanmayanlar</div>
             </div>
             <div class="filter-item">
-              <div class="filter-item-checkbox"><ion-checkbox mode="md"></ion-checkbox></div>
+              <div class="filter-item-checkbox"><ion-checkbox mode="md" [(ngModel)] = "postData.filter.acceptedanswer"></ion-checkbox></div>
               <div class="filter-item-text">Kabul edilmemiş cevaplar</div>
             </div>
           </div>
@@ -44,7 +44,7 @@
           <div class="ion-text-center"><b>Sırala</b></div>
           <div class="filter-items">
             <div class="filter-item" *ngFor="let filterItem of filterItems; let i = index">
-              <div class="filter-item-checkbox"><ion-checkbox mode="md"></ion-checkbox></div>
+              <div class="filter-item-checkbox"><ion-checkbox mode="md" [ngModel]="postData.filter.sortCheck == i" (ngModelChange)="$event ? postData.filter.sortCheck = i : postData.filter.sortCheck = -1"></ion-checkbox></div>
               <div class="filter-item-text">{{filterItem.display}}</div>
             </div>
           </div>
@@ -52,16 +52,12 @@
         <ion-col size="12" size-md>
           <div class="ion-text-center"><b>Takip Edilen</b></div>
           <div class="filter-items">
-            <div class="filter-item">
-              <div class="filter-item-checkbox"><ion-checkbox mode="md"></ion-checkbox></div>
-              <div class="filter-item-text">İzlediğim Etiketler</div>
+            <div class="filter-item" *ngFor="let followItem of followItems; let i = index">
+              <div class="filter-item-checkbox"><ion-checkbox mode="md" [ngModel]="postData.filter.followCheck == i" (ngModelChange)="$event ? postData.filter.followCheck = i : postData.filter.followCheck = -1"></ion-checkbox></div>
+              <div class="filter-item-text">{{followItem.display}}</div>
             </div>
             <div class="filter-item">
-              <div class="filter-item-checkbox"><ion-checkbox mode="md"></ion-checkbox></div>
-              <div class="filter-item-text">Aşağıdaki Etiketler</div>
-            </div>
-            <div class="filter-item">
-              <tag-input  [ngModel]="[]" 
+              <tag-input  [(ngModel)]="postData.filter.tags" 
                           [placeholder]="'yeni bir etiket girin'"
                           [secondaryPlaceholder]="'örneğin: javascript'"
                           [onlyFromAutocomplete]="true"
@@ -81,18 +77,18 @@
       </ion-row>
       <ion-row>
         <ion-col size="7">
-          <p>Toplam <b>1.250</b> adet soru</p>
+          <p>Toplam <b>{{ totalData }}</b> adet soru</p>
         </ion-col>
         <ion-col class="ion-align-self-center">
           <div class="ion-text-end" style="margin-right:8px">
-            <ion-segment mode="ios" style="margin-right:15px;margin-bottom:10px;" value="interest">
-              <ion-segment-button value="interest">
+            <ion-segment mode="ios" style="margin-right:15px;margin-bottom:10px;" value="{{postData.type}}" (ionChange)="segmentChanged($event)">
+              <ion-segment-button value="new">
                 <ion-label>Yeni</ion-label>
               </ion-segment-button>
-              <ion-segment-button value="hot">
+              <ion-segment-button value="active">
                 <ion-label>Aktif</ion-label>
               </ion-segment-button>
-              <ion-segment-button value="week">
+              <ion-segment-button value="notanswer">
                 <ion-label>Cevaplanmamışlar</ion-label>
               </ion-segment-button>
             </ion-segment>
@@ -105,120 +101,65 @@
     <!-- questions -->
     <ion-list lines="full">
       <!-- question -->
-      <ion-item>
+      <ion-item *ngFor="let question of questions" routerLink="/board/show-question/{{question.QuestionID}}">
         <div class="question">
           <div class="question-mobile">
             <div class="reputation-bar-mobile votes">
-              <span>1000</span> oy
+              <div class="mini-counts"><span>{{ question.Reputation }}</span> oy</div>
             </div>
-            <div class="reputation-bar-mobile answers answered">
-              <span>1000</span> cevap
+            <div class="reputation-bar-mobile answers" *ngIf="question.AnswerCount == 0">
+              <div class="mini-counts"><span>{{ question.AnswerCount }}</span> cevap</div>
+            </div>
+            <div class="reputation-bar-mobile answers answered" *ngIf="question.AnswerCount > 0 && question.Status == 0">
+              <div class="mini-counts"><span>{{ question.AnswerCount }}</span> cevap</div>
+            </div>
+            <div class="reputation-bar-mobile answers solved" *ngIf="question.AnswerCount > 0 && question.Status > 0">
+              <div class="mini-counts"><span>{{ question.AnswerCount }}</span> cevap</div>
             </div>
             <div class="reputation-bar-mobile views">
-              <span>1000</span> görüntüleme
+              <div class="mini-counts"><span>{{ question.View }}</span> görüntüleme</div>
             </div>
           </div>
           <div class="question-left col-md-6">
             <div class="row1">
               <div class="reputation-bar votes">
-                <div class="mini-counts"><span>1000</span></div>
+                <div class="mini-counts"><span>{{ question.Reputation }}</span></div>
                 <div>oy</div>
               </div>
-              <div class="reputation-bar answers answered">
-                <div class="mini-counts"><span>1000</span></div>
+              <div class="reputation-bar answers" *ngIf="question.AnswerCount == 0">
+                <div class="mini-counts"><span>{{ question.AnswerCount }}</span></div>
+                <div>cevap</div>
+              </div>
+              <div class="reputation-bar answers answered" *ngIf="question.AnswerCount > 0 && question.Status == 0">
+                <div class="mini-counts"><span>{{ question.AnswerCount }}</span></div>
+                <div>cevap</div>
+              </div>
+              <div class="reputation-bar answers solved" *ngIf="question.AnswerCount > 0 && question.Status > 0">
+                <div class="mini-counts"><span>{{ question.AnswerCount }}</span></div>
                 <div>cevap</div>
               </div>
             </div>
             <div class="row2">
               <div class="reputation-bar views">
-                <div class="mini-counts"><span>1000</span></div>
+                <div class="mini-counts"><span>{{ question.View }}</span></div>
                 <div>görüntüleme</div>
               </div>
             </div>
           </div>
           <div class="question-right col-md-6">
-            <ion-text color="primary" routerLink="/login" style="cursor:pointer">
-              <h5>Generate select options using page titles</h5>
+            <ion-text color="primary" style="cursor:pointer">
+              <h5>{{ question.Title }}</h5>
             </ion-text>
             <p style="font-size:11px">
-              Lorem Ipsum, dizgi ve baskı endüstrisinde kullanılan mıgır metinlerdir. Lorem Ipsum, adı bilinmeyen bir matbaacının bir hurufat numune kitabı oluşturmak üzere bir yazı galerisini alarak karıştırdığı 1500'lerden beri endüstri standardı sahte metinler olarak kullanılmıştır.
+              {{ question.Content }}...
             </p>
             <div class="question-tags">
-              <ion-chip routerLink="/signup" color="primary">
-                <ion-label>Default</ion-label>
-              </ion-chip>
-              <ion-chip routerLink="/signup" color="primary">
-                <ion-label>Default</ion-label>
-              </ion-chip>
-              <ion-chip routerLink="/signup" color="primary">
-                <ion-label>Default</ion-label>
-              </ion-chip>
-              <ion-chip routerLink="/signup" color="primary">
-                <ion-label>Default</ion-label>
+              <ion-chip color="primary" *ngFor="let tag of question.Tags">
+                <ion-label>{{ tag.TagName }}</ion-label>
               </ion-chip>
             </div>
             <div class="question-asked-by">
-              <ion-text color="danger">wicked</ion-text> tarafından <ion-text color="medium">3 dakika önce</ion-text> soruldu.
-            </div>
-          </div>
-        </div>
-      </ion-item>
-      <!--#question -->
-      <!-- question -->
-      <ion-item>
-        <div class="question">
-          <div class="question-mobile">
-            <div class="reputation-bar-mobile votes">
-              <div class="mini-counts"><span>10</span> oy</div>
-            </div>
-            <div class="reputation-bar-mobile answers solved">
-              <div class="mini-counts"><span>92</span> cevap</div>
-            </div>
-            <div class="reputation-bar-mobile views">
-              <div class="mini-counts"><span>760</span> görüntüleme</div>
-            </div>
-          </div>
-          <div class="question-left col-md-6">
-            <div class="row1">
-              <div class="reputation-bar votes">
-                <div class="mini-counts"><span>10</span></div>
-                <div>oy</div>
-              </div>
-              <div class="reputation-bar answers solved">
-                <div class="mini-counts"><span>92</span></div>
-                <div>cevap</div>
-              </div>
-            </div>
-            <div class="row2">
-              <div class="reputation-bar views">
-                <div class="mini-counts"><span>760</span></div>
-                <div>görüntüleme</div>
-              </div>
-            </div>
-          </div>
-          <div class="question-right col-md-6">
-            <ion-text color="primary" routerLink="/login" style="cursor:pointer">
-              <h5>Generate select options using page titles</h5>
-            </ion-text>
-            <p style="font-size:11px">
-              Lorem Ipsum, dizgi ve baskı endüstrisinde kullanılan mıgır metinlerdir. Lorem Ipsum, adı bilinmeyen bir matbaacının bir hurufat numune kitabı oluşturmak üzere bir yazı galerisini alarak karıştırdığı 1500'lerden beri endüstri standardı sahte metinler olarak kullanılmıştır.
-            </p>
-            <div class="question-tags">
-              <ion-chip routerLink="/signup" color="primary">
-                <ion-label>Default</ion-label>
-              </ion-chip>
-              <ion-chip routerLink="/signup" color="primary">
-                <ion-label>Default</ion-label>
-              </ion-chip>
-              <ion-chip routerLink="/signup" color="primary">
-                <ion-label>Default</ion-label>
-              </ion-chip>
-              <ion-chip routerLink="/signup" color="primary">
-                <ion-label>Default</ion-label>
-              </ion-chip>
-            </div>
-            <div class="question-asked-by">
-              <ion-text color="danger">wicked</ion-text> tarafından <ion-text color="medium">3 dakika önce</ion-text> soruldu.
+              <ion-text color="danger">{{ question.Username }}</ion-text> tarafından <ion-text color="medium">{{ question.PostDate }}</ion-text> {{ question.PostType }}.
             </div>
           </div>
         </div>
@@ -226,6 +167,13 @@
       <!--#question -->
     </ion-list>
     <!--#questions -->
+
+    <ion-infinite-scroll threshold="25%" (ionInfinite)="loadMore($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Yükleniyor...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
   </div>
 
 </ion-content>

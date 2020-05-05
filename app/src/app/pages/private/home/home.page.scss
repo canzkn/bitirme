@@ -51,6 +51,7 @@
         height:20px;
         font-size:11px;
     }
+    width: 100%;
 }
 
 .question-asked-by {
@@ -89,5 +90,14 @@
     .question-mobile
     {
         display: block;
+    }
+}
+
+@media only screen and (max-width: 634px)
+{
+    .question-asked-by 
+    {
+        float:left !important;
+        padding-top: 10px;
     }
 }

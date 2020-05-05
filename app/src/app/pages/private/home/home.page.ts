@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { IonInfiniteScroll } from '@ionic/angular';
+import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { QuestionService } from '../../../services/question/question.service';
 import { AuthenticationService } from '../../../services/authenticaton/authentication.service';
-import { Subscription, Subject } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -21,8 +21,11 @@ export class HomePage {
   constructor(
     private http: HttpClient,
     private qService : QuestionService,
-    private auth : AuthenticationService
+    private auth : AuthenticationService,
+    private loadingController : LoadingController
   ) { }
+
+  
 
   ionViewWillEnter()
   {
@@ -40,14 +43,25 @@ export class HomePage {
     this._userDataListener.unsubscribe()
     this.questions = [];
     this.pageId = 1;
+    this.defaultSegment = 'hot';
   }
 
   // load questions
-  loadQuestions(queryFilter, queryPageID, event?)
+  async loadQuestions(queryFilter, queryPageID, event?)
   {
       var postData = {
         filter : queryFilter,
         page_id : queryPageID,
+      }
+
+      const loading = await this.loadingController.create({
+        message: 'Yükleniyor...',
+        duration: 3000
+      });
+
+      if (queryPageID == 1)
+      {
+        await loading.present();
       }
 
       this._userDataListener = this.auth.userData$.subscribe(res => {
@@ -70,6 +84,11 @@ export class HomePage {
             }
 
             // console.log(response)
+          }
+
+          if(queryPageID == 1)
+          {
+            loading.dismiss()
           }
         })
       })
