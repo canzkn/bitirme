@@ -14,7 +14,7 @@ class QuestionOperations extends Core\Question {
 
     // DB Stuff
     private $conn;
-    private $tables = ['questions', 'question_tags', 'users', 'answers'];
+    private $tables = ['questions', 'question_tags', 'users', 'answers', 'user_interest'];
 
     // Constructor with DB
     public function __construct($db) 
@@ -135,31 +135,31 @@ class QuestionOperations extends Core\Question {
         // get new
         if($type == "new")
         {
-             // get total data
-             $totalDataQuery = 'SELECT COUNT(*) FROM ' . $this->tables[0] . ' ORDER BY CreateDate DESC';
+            // get total data
+            $totalDataQuery = 'SELECT COUNT(*) FROM ' . $this->tables[0] . ' ORDER BY CreateDate DESC';
 
-             // Get New Question Query
-             $QuestionQuery = 'SELECT * FROM ' . $this->tables[0] . ' ORDER BY CreateDate DESC';
+            // Get New Question Query
+            $QuestionQuery = 'SELECT * FROM ' . $this->tables[0] . ' ORDER BY CreateDate DESC';
         }
 
         // get active
         if($type == "active")
         {
-             // get total data
-             $totalDataQuery = 'SELECT COUNT(*) FROM ' . $this->tables[0] . ' ORDER BY UpdateDate DESC';
+            // get total data
+            $totalDataQuery = 'SELECT COUNT(*) FROM ' . $this->tables[0] . ' ORDER BY UpdateDate DESC';
 
-             // Get New Question Query
-             $QuestionQuery = 'SELECT * FROM ' . $this->tables[0] . ' ORDER BY UpdateDate DESC';
+            // Get New Question Query
+            $QuestionQuery = 'SELECT * FROM ' . $this->tables[0] . ' ORDER BY UpdateDate DESC';
         }
 
         // get unanswered
         if($type == "notanswer")
         {
-             // get total data
-             $totalDataQuery = 'SELECT COUNT(*) FROM ' . $this->tables[0] . ' WHERE AnswerUserID = 0 ORDER BY Reputation DESC';
+            // get total data
+            $totalDataQuery = 'SELECT COUNT(*) FROM ' . $this->tables[0] . ' WHERE AnswerUserID = 0 ORDER BY Reputation DESC';
 
-             // Get New Question Query
-             $QuestionQuery = 'SELECT * FROM ' . $this->tables[0] . ' WHERE AnswerUserID = 0 ORDER BY Reputation DESC';
+            // Get New Question Query
+            $QuestionQuery = 'SELECT * FROM ' . $this->tables[0] . ' WHERE AnswerUserID = 0 ORDER BY Reputation DESC';
         }
 
         if($type == "special")
@@ -167,6 +167,130 @@ class QuestionOperations extends Core\Question {
             /**
              * TODO : filtreleme işlemleri bu alanda yapılacak.
              */
+
+            $filterQueries = array();
+
+            $unanswered = $filter->unanswered; // +
+            $acceptedanswer = $filter->acceptedanswer; // +
+            $sortCheck = $filter->sortCheck; // +
+            $followCheck = $filter->followCheck; //+
+            $tags = $filter->tags; // +
+
+            // unanswered check
+            if($unanswered)
+            {
+                $unansweredQuery = 'AnswerUserID = 0';
+                $filterQueries[] = $unansweredQuery;
+            }
+
+            // acceptedanswer check
+            if($acceptedanswer)
+            {
+                $acceptedanswerQuery = 'Status = 0';
+                $filterQueries[] = $acceptedanswerQuery;
+            }
+
+            // sort query
+            if($sortCheck == 0)
+            {
+                $sortQuery = 'ORDER BY CreateDate DESC';
+            }
+            elseif($sortCheck == 1)
+            {
+                $sortQuery = 'ORDER BY UpdateDate DESC';
+            }
+            elseif($sortCheck == 2)
+            {
+                $sortQuery = 'ORDER BY Reputation DESC';
+            }
+            elseif($sortCheck == 3)
+            {
+                $sortQuery = 'ORDER BY View DESC';
+            }
+            else
+            {
+                $sortQuery = '';
+            }
+
+            // follow check
+            if($followCheck == 0)
+            {
+                // get my follow tags
+                $myFollowQuery = 'SELECT TagID FROM ' .  $this->tables[4] . ' WHERE UserID = :UserID';
+                // prepare statement
+                $statement = $this->conn->prepare($myFollowQuery);
+                // bind param
+                $statement->bindParam(':UserID', $this->getUserID());
+                // execute query
+                $statement->execute();
+                $datas = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $myTags = array();
+                foreach($datas as $data)
+                {
+                    $myTags[] = $data['TagID'];
+                }
+                // get questions id by my tags
+                $myFollowQuestionQuery = 'SELECT DISTINCT QuestionID FROM ' . $this->tables[1] . ' WHERE TagID in (' . implode(',', $myTags) . ')';
+                // prepare statement
+                $statement = $this->conn->prepare($myFollowQuestionQuery);
+                // execute query
+                $statement->execute();
+                $datas = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $QuestionIds = array();
+                foreach($datas as $data)
+                {
+                    $QuestionIds[] = $data['QuestionID'];
+                }
+
+                $followCheckQuery = 'QuestionID in (' . implode(',', $QuestionIds) . ')';
+            }
+            elseif($followCheck == 1)
+            {
+                $myTags = array();
+                foreach($tags as $tag)
+                {
+                    $myTags[] = $tag->value;
+                }
+                // get questions id by my tags
+                $myFollowQuestionQuery = 'SELECT DISTINCT QuestionID FROM ' . $this->tables[1] . ' WHERE TagID in (' . implode(',', $myTags) . ')';
+                // prepare statement
+                $statement = $this->conn->prepare($myFollowQuestionQuery);
+                // execute query
+                $statement->execute();
+                $datas = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $QuestionIds = array();
+                foreach($datas as $data)
+                {
+                    $QuestionIds[] = $data['QuestionID'];
+                }
+
+                $followCheckQuery = 'QuestionID in (' . implode(',', $QuestionIds) . ')';
+            }
+            else
+            {
+                $followCheckQuery = ''; 
+            }
+
+            if($followCheckQuery)
+            {
+                $filterQueries[] = $followCheckQuery;
+            }
+
+            if(count($filterQueries) > 0)
+            {
+                $filterQueryCondition = 'WHERE ' . implode(' AND ', $filterQueries);
+            }
+            else
+            {
+                $filterQueryCondition = '';
+            }
+
+            // get total data
+            $totalDataQuery = 'SELECT COUNT(*) FROM ' . $this->tables[0] . ' ' .  $filterQueryCondition . ' ' . $sortQuery;
+
+            // Get New Question Query
+            $QuestionQuery = 'SELECT * FROM ' . $this->tables[0] . ' ' .  $filterQueryCondition . ' ' . $sortQuery;
+            
         }
 
         // prepare statement

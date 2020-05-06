@@ -28,7 +28,7 @@ export class QuestionsPage {
     filter : {
       unanswered : false,
       acceptedanswer : false,
-      sortCheck : -1,
+      sortCheck : 1,
       followCheck : -1,
       tags: '',
     },
@@ -103,21 +103,25 @@ export class QuestionsPage {
 
   applyFilter()
   {
-    // console.log(this.sortCheck, this.followCheck)
+    // console.log(JSON.stringify(this.postData))
     this.postData.type = 'special'
-    console.log(JSON.stringify(this.postData))
+    this.questions = [];
+    this.totalData = 0;
+    this.loadQuestions(this.postData)
   }
 
   // segment change
   segmentChanged(ev: any) {
-    this.ionViewWillLeave()
     if(this.currentEvent)
     {
-      // console.log(this.currentEvent)
       this.currentEvent.target.disabled = false
     }
     this.postData.type = ev.detail.value
-    this.loadQuestions(this.postData)
+    if(this.postData.type != 'special')
+    {
+      this.ionViewWillLeave()
+      this.loadQuestions(this.postData)
+    }
   }
 
   // clear data
@@ -126,7 +130,7 @@ export class QuestionsPage {
     this.postData.type = 'new'
     this.postData.filter.unanswered = false
     this.postData.filter.acceptedanswer = false
-    this.postData.filter.sortCheck = -1
+    this.postData.filter.sortCheck = 1
     this.postData.filter.followCheck = -1
     this.postData.filter.tags = ''
     this.postData.pageId = 1
@@ -144,7 +148,6 @@ export class QuestionsPage {
     {
       await loading.present();
     }
-    console.log(postData)
     this._userDataListener = this.auth.userData$.subscribe(res => {
       // console.log(res)
       this.qService.getAllQuestions(res.data, JSON.stringify(postData)).subscribe(response => {
@@ -154,7 +157,7 @@ export class QuestionsPage {
         }
         else
         {
-          console.log(response)
+          // console.log(response)
           this.questions = this.questions.concat(response.data)
           this.totalData = response.total_data
           if(event)
