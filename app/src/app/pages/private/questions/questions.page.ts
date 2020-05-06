@@ -4,6 +4,8 @@ import { QuestionService } from '../../../services/question/question.service';
 import { AuthenticationService } from '../../../services/authenticaton/authentication.service';
 import { Subscription } from 'rxjs';
 import { LoadingController } from '@ionic/angular';
+import { Tag } from '../../../models/tag.model';
+import { ConstantService } from '../../../services/constant/constant.service'
 
 @Component({
   selector: 'app-questions',
@@ -19,6 +21,8 @@ export class QuestionsPage {
   currentEvent;
   totalData : number = 0;
 
+  filterButton = true;
+
   postData = {
     type : 'new',
     filter : {
@@ -32,20 +36,7 @@ export class QuestionsPage {
   }
 
   // auto complete fields
-  autocompleteFields = [
-    {
-      value: 1, 
-      display: 'Javascript'
-    },
-    {
-      value: 2, 
-      display: 'Java'
-    },
-    {
-      value: 3, 
-      display: 'React'
-    },
-  ]
+  autocompleteFields = []
 
   // filter items
   filterItems = [
@@ -77,8 +68,16 @@ export class QuestionsPage {
     private http: HttpClient,
     private qService : QuestionService,
     private auth : AuthenticationService,
-    private loadingController : LoadingController
-  ) { }
+    private loadingController : LoadingController,
+    private constantService : ConstantService,
+  ) { 
+    this.http.get<Tag[]>(this.constantService.API_URL + 'tags').subscribe(res => {    
+      for(let i=0; i < res.length; i++)
+      {
+        this.autocompleteFields.push({display: res[i].TagName, value: res[i].TagID})
+      }
+    })
+  }
 
   ionViewWillEnter()
   {

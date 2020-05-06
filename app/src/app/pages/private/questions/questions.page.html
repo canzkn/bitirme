@@ -56,7 +56,7 @@
               <div class="filter-item-checkbox"><ion-checkbox mode="md" [ngModel]="postData.filter.followCheck == i" (ngModelChange)="$event ? postData.filter.followCheck = i : postData.filter.followCheck = -1"></ion-checkbox></div>
               <div class="filter-item-text">{{followItem.display}}</div>
             </div>
-            <div class="filter-item">
+            <div class="filter-item" *ngIf="postData.filter.followCheck == 1">
               <tag-input  [(ngModel)]="postData.filter.tags" 
                           [placeholder]="'yeni bir etiket girin'"
                           [secondaryPlaceholder]="'örneğin: javascript'"
@@ -71,7 +71,7 @@
         </ion-col>
         <ion-col size="12">
           <div class="ion-text-end">
-            <ion-button color="dark" size="small" (click)="applyFilter()">Filtreyi Uygula</ion-button>
+            <ion-button [disabled]="(postData.filter.acceptedanswer == true || postData.filter.unanswered == true || postData.filter.followCheck !== -1 || postData.filter.sortCheck !== -1) ? false : true" color="dark" size="small" (click)="applyFilter()">Filtreyi Uygula</ion-button>
           </div>
         </ion-col>
       </ion-row>
