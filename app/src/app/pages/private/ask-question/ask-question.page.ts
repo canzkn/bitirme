@@ -5,6 +5,7 @@ import { Tag } from '../../../models/tag.model';
 import { AuthenticationService } from '../../../services/authenticaton/authentication.service';
 import { QuestionService } from '../../../services/question/question.service';
 import { ToastService } from '../../../services/toast/toast.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-ask-question',
   templateUrl: './ask-question.page.html',
@@ -26,7 +27,8 @@ export class AskQuestionPage implements OnInit {
     private constantService : ConstantService,
     private toast : ToastService,
     private auth : AuthenticationService,
-    private qService : QuestionService) { }
+    private qService : QuestionService,
+    private router : Router) { }
 
   ngOnInit() {
     this.http.get<Tag[]>(this.constantService.API_URL + 'tags').subscribe(res => {    
@@ -68,7 +70,7 @@ export class AskQuestionPage implements OnInit {
           {
             this.toast.success("Sorunuz başarı ile eklenmiştir!");
             this.clear();
-            // TODO : burada soru yönlendirmesi olacak.
+            this.router.navigate(['/board/show-question/', response.QuestionID])
           }
 
           if(response.message == "ADD_QUESTION_FAILED")

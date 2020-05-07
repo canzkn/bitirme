@@ -11,10 +11,11 @@ class QuestionOperations extends Core\Question {
     // Error Codes
     private $FAILED_CODE = 0;
     private $SUCCESS_CODE = 1;
+    private $NOT_FOUND = 404;
 
     // DB Stuff
     private $conn;
-    private $tables = ['questions', 'question_tags', 'users', 'answers', 'user_interest'];
+    private $tables = ['questions', 'question_tags', 'users', 'answers', 'user_interest', 'tags'];
 
     // Constructor with DB
     public function __construct($db) 
@@ -386,5 +387,68 @@ class QuestionOperations extends Core\Question {
         }
 
         return $row;
+    }
+
+    // Get Single Question
+    public function getQuestion()
+    {
+        // get total data
+        $totalDataQuery = 'SELECT COUNT(*) FROM ' . $this->tables[0] . '  WHERE QuestionID = :QuestionID LIMIT 1';
+
+        // prepare statement
+        $statement = $this->conn->prepare($totalDataQuery);
+        // bind param
+        $statement->bindParam(':QuestionID', $this->getQuestionID());
+        // execute query
+        $statement->execute();
+        $total_data = $statement->fetchColumn();
+
+        if(!$total_data)
+        {
+            return $this->NOT_FOUND;
+        }
+
+        // Get Hot Question Query
+        $QuestionQuery = 'SELECT * FROM ' . $this->tables[0] . '  WHERE QuestionID = :QuestionID LIMIT 1';
+        // prepare statement
+        $statement = $this->conn->prepare($QuestionQuery);
+        // bind param
+        $statement->bindParam(':QuestionID', $this->getQuestionID());
+        // execute query
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        // question manipulation
+        $result['CreateDateString'] = Functions::time_convert2($result['CreateDate']);
+        $result['CreateDate'] = Functions::time_convert($result['CreateDate']);
+        $result['UpdateDate'] = Functions::time_convert($result['UpdateDate']);
+        
+
+        unset($result['Status']);
+        unset($result['AnswerUserID']);
+
+        // get user info
+        $userQuery = 'SELECT UserID, Fullname, AvatarImage, Reputation FROM ' . $this->tables[2] . '  WHERE UserID = :UserID LIMIT 1';
+        // prepare statement
+        $statement = $this->conn->prepare($userQuery);
+        // bind param
+        $statement->bindParam(':UserID', $result['UserID']);
+        // execute query
+        $statement->execute();
+        $user_data = $statement->fetch(PDO::FETCH_ASSOC);
+        $result['User'] = $user_data;
+        unset($result['UserID']);
+
+        // get tags
+        $tagsQuery = 'SELECT tags.TagID, tags.TagName FROM ' . $this->tables[1] . ' INNER JOIN '. $this->tables[5] . ' ON question_tags.TagID = tags.TagID WHERE question_tags.QuestionID = :QuestionID';
+        // prepare statement
+        $statement = $this->conn->prepare($tagsQuery);
+        // bind param
+        $statement->bindParam(':QuestionID', $this->getQuestionID());
+        // execute query
+        $statement->execute();
+        $tags_data = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $result['Tags'] = $tags_data;
+        return $result;
     }
 }

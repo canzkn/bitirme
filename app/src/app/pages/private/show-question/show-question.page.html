@@ -15,18 +15,15 @@
   <div class="question">
     <!-- question header -->
     <div id="question-header">
-      <div class="headline"><h3>Why is processing a sorted array faster than processing an unsorted array?</h3></div>
+      <div class="headline"><h3>{{ Question.Title }}</h3></div>
       <div class="times">
-        <span>7 yıl 9 ay önce <span>soruldu</span></span>
-        <span>7 gün önce <span>son aktivite</span></span>
-        <span>1.500 <span>kere görüntülendi</span></span>
+        <span>{{ Question.CreateDate }} <span>soruldu</span></span>
+        <span>{{ Question.UpdateDate }} <span>son aktivite</span></span>
+        <span>{{ Question.View }} <span>kere görüntülendi</span></span>
       </div>
       <div class="tags">
-        <ion-chip color="primary">
-          <ion-label>c++</ion-label>
-        </ion-chip>
-        <ion-chip color="primary">
-          <ion-label>java</ion-label>
+        <ion-chip color="primary" *ngFor="let tag of Question.Tags">
+          <ion-label>{{ tag.TagName }}</ion-label>
         </ion-chip>
       </div>
     </div>
@@ -38,23 +35,23 @@
         <div class="votecell post-layout-left">
           <div class="voting-container">
             <ion-button mode="ios" class="icon-button"><ion-icon slot="icon-only" name="caret-up-outline"></ion-icon></ion-button>
-            <ion-label>1240</ion-label>
+            <ion-label>{{ Question.Reputation }}</ion-label>
             <ion-button mode="ios" class="icon-button"><ion-icon slot="icon-only" name="caret-down-outline"></ion-icon></ion-button>
           </div>
         </div>
-        <div class="postcell post-layout-right" [innerHtml]="code"></div>
+        <div class="postcell post-layout-right" [innerHtml]="Question.Content"></div>
       </div>
     </div>
     <div class="from-user asker">
       <ion-item color="none" lines="none">
         <ion-avatar slot="start">
-          <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+          <img src="{{API_URL}}{{Question.User.AvatarImage}}">
         </ion-avatar>
         <ion-label>
-          <h3>Hasan Can Özkan</h3>
-          <p><b>1453</b> Puan</p>
+          <h3>{{Question.User.Fullname}}</h3>
+          <p><b>{{Question.User.Reputation}}</b> Puan</p>
         </ion-label>
-        <ion-note slot="end" mode="md">2 Nisan 2020 22:24 <br>tarihinde sordu</ion-note>
+        <ion-note slot="end" mode="md">{{ Question.CreateDateString }} <br>tarihinde sordu</ion-note>
       </ion-item>
     </div>
     <!--#question content -->
@@ -144,11 +141,11 @@
     <ion-title>Yorumunuzu yazın</ion-title>
   </ion-toolbar>
   <div class="editor-area">
-    <quill-editor [(ngModel)]="htmlText"
+    <quill-editor [(ngModel)]="answerPostData.Content"
     placeholder="Lütfen sorununuzu buraya yazınız."></quill-editor>
   </div>
   <div class="ion-no-padding">
-    <ion-button expand="full" mode="ios" class="ion-no-margin">Cevabınızı Gönderin</ion-button>
+    <ion-button [disabled] = "answerPostData.Content ? false : true" expand="full" mode="ios" class="ion-no-margin" (click) = "addAnswer()">Cevabınızı Gönderin</ion-button>
   </div>
   <!--#POST YOUR ANSWER -->
 </ion-content>

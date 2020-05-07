@@ -21,6 +21,14 @@ export class QuestionService {
     })
   }
 
+  // Add Answer to Question
+  addAnswer(auth, post_data) : Observable<any>
+  {
+    return this.http.post(this.constantService.API_URL + 'question/add_answer', post_data, {
+      headers: {'Authorization': 'UserID='+ auth.UserID +'; token='+ auth.Token +';'}
+    })
+  }
+
   // Get Last Questions
   getLastQuestions(auth, post_data) : Observable<any>
   {
@@ -35,5 +43,13 @@ export class QuestionService {
     return this.http.post(this.constantService.API_URL + 'question/get_all', post_data, {
       headers: {'Authorization': 'UserID='+ auth.UserID +'; token='+ auth.Token +';'}
     })
-  } 
+  }
+  
+  // Get Single Question
+  getQuestion(auth, post_data) : Observable<any>
+  {
+    return this.http.post(this.constantService.API_URL + 'question/get', post_data, {
+      headers: {'Authorization': 'UserID='+ auth.UserID +'; token='+ auth.Token +';'}
+    })
+  }
 }

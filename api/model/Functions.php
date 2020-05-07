@@ -123,5 +123,26 @@ class Functions{
 	   } else {
 	      return $yil.' yıl önce';
 	   }
+    }
+    
+    // time convert 2
+    public function time_convert2 ( $date )
+	{
+		$aylar = array(
+			'Ocak',
+			'Şubat',
+			'Mart',
+			'Nisan',
+			'Mayıs',
+			'Haziran',
+			'Temmuz',
+			'Ağustos',
+			'Eylül',
+			'Ekim',
+			'Kasım',
+			'Aralık'
+		);
+		$ay = $aylar[date('m', strtotime($date)) - 1];
+		return date("j ", strtotime($date)) . $ay . date(" Y H:i", strtotime($date));
 	}
 }
