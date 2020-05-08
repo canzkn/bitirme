@@ -32,4 +32,10 @@ export class StorageService {
   async clear() {
     await Storage.clear();
   }
+
+  // is_exists
+  async is_exist(storageKey: string) {
+    const ret = await Storage.get({ key: storageKey });
+    return ret.value;
+  }
 }

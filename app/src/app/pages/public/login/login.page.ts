@@ -79,6 +79,7 @@ export class LoginPage implements OnInit {
           if(res.message == 'LOGIN_SUCCESS')
           {
             this.storageService.store(this.constantService.AUTH, res)
+            // this.storageService.store('ViewedQuestions', [0, 1, 2, 3])
             if(res.data.isInterest == 1)
             {
               this.router.navigate(['board/home']);

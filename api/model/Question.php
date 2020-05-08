@@ -454,4 +454,50 @@ class QuestionOperations extends Core\Question {
         $result['Tags'] = $tags_data;
         return $result;
     }
+
+    // Increase Question
+    public function numericalOperations($type, $column)
+    {
+        // get total data
+        $totalDataQuery = 'SELECT COUNT(*) FROM ' . $this->tables[0] . '  WHERE QuestionID = :QuestionID LIMIT 1';
+
+        // prepare statement
+        $statement = $this->conn->prepare($totalDataQuery);
+        // bind param
+        $statement->bindParam(':QuestionID', $this->getQuestionID());
+        // execute query
+        $statement->execute();
+        $total_data = $statement->fetchColumn();
+
+        if(!$total_data)
+        {
+            return $this->NOT_FOUND;
+        }
+
+
+        if($type == "increase")
+        {
+            $operator = '+ 1';
+        }
+        
+        if($type == "descrease")
+        {
+            $operator = '- 1';
+        }
+
+        // Get Hot Question Query
+        $QuestionQuery = 'UPDATE ' . $this->tables[0] . ' SET '.$column.' = ' .$column . ' '. $operator . ' WHERE QuestionID = :QuestionID';
+        
+        // prepare statement
+        $statement = $this->conn->prepare($QuestionQuery);
+        // bind param
+        $statement->bindParam(':QuestionID', $this->getQuestionID());
+        // execute query
+        if($statement->execute())
+        {
+            return $this->SUCCESS_CODE;
+        }
+
+        return $this->FAILED_CODE;
+    }
 }

@@ -6,6 +6,7 @@ import { ConstantService } from '../../../services/constant/constant.service';
 import { Subscription } from 'rxjs';
 import { LoadingController } from '@ionic/angular';
 import { ToastService } from '../../../services/toast/toast.service';
+import { StorageService } from '../../../services/storage/storage.service';
 
 @Component({
   selector: 'app-show-question',
@@ -15,6 +16,7 @@ import { ToastService } from '../../../services/toast/toast.service';
 export class ShowQuestionPage {
 
   private _userDataListener: Subscription = new Subscription();
+  private _viewListener: Subscription = new Subscription();
 
   API_URL = '';
 
@@ -51,6 +53,8 @@ export class ShowQuestionPage {
 
   htmlText = ""
 
+  ViewedQuestions = [];
+  
   constructor(
     private activatedRoute: ActivatedRoute,
     private auth: AuthenticationService,
@@ -58,7 +62,8 @@ export class ShowQuestionPage {
     private loadingController : LoadingController,
     private cService : ConstantService,
     private toast : ToastService,
-    private router : Router
+    private router : Router,
+    private storage : StorageService
     ) { 
       this.API_URL = this.cService.API_URL;
     }
@@ -86,8 +91,6 @@ export class ShowQuestionPage {
       duration: 3000
     });
 
-    
-
     this._userDataListener = this.auth.userData$.subscribe(res => {
       this.answerPostData.UserID = res.data.UserID
       this.qService.getQuestion(res.data, this.postData).subscribe(response => {
@@ -106,6 +109,47 @@ export class ShowQuestionPage {
           this.Question = response
           loading.dismiss()
           console.log(this.Question)
+          // görüntülenme
+          
+          this.storage.is_exist('ViewedQuestions').then(data => {
+            this._viewListener.unsubscribe();
+            if(data == null)
+            {
+              console.log("ViewedQuestions bulunamadı, oluşturuluyor.")
+              this.ViewedQuestions.push(this.Question.QuestionID)
+              this.storage.store('ViewedQuestions', this.ViewedQuestions)
+              console.log(this.ViewedQuestions)
+              // reste gönder
+              this._viewListener = this.qService.numericalOperations(res.data, {QuestionID: this.Question.QuestionID, type: 'increase', column: 'View'}).subscribe(view_response => {
+                console.log(view_response)
+              })
+            }
+            else
+            {
+              console.log("ViewedQuestions bulundu, güncelleniyor.")
+              this.storage.get('ViewedQuestions').then(
+                res_ViewedQuestions => {
+                  this.ViewedQuestions = res_ViewedQuestions;
+                  if(this.ViewedQuestions.indexOf(this.Question.QuestionID) !== -1)
+                  {
+                    console.log("güncellemeye gerek yok");
+                    console.log(this.ViewedQuestions)
+                  }
+                  else
+                  {
+                    console.log("reste gönder ve storage'a at.");
+                    this.ViewedQuestions.push(this.Question.QuestionID)
+                    this.storage.store('ViewedQuestions', this.ViewedQuestions)
+                    console.log(this.ViewedQuestions)
+                    // reste gönder
+                    this._viewListener = this.qService.numericalOperations(res.data, {QuestionID: this.Question.QuestionID, type: 'increase', column: 'View'}).subscribe(view_response => {
+                      console.log(view_response)
+                    })
+                  }
+                }
+              )
+            }
+          })
         }
       })
     })
@@ -183,5 +227,10 @@ export class ShowQuestionPage {
     }
 
     return true;
+  }
+
+  compareView(val)
+  {
+    // // return this.ViewedQuestions.QuestionID == val
   }
 }
