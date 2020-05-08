@@ -23,6 +23,6 @@ include_once 'model/Database.php';
 $database = new Database();
 $db = $database->connect();
 
-$api_url = "https://canozkan.net/kavramapp/";
+$api_url = "http://localhost/bitirme/api/";
 
 define("API_URL", $api_url);

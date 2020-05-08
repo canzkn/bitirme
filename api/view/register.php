@@ -17,10 +17,12 @@ header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,
 $data = json_decode(file_get_contents("php://input"));
 
 // Clean Data and Set
+$fullname   = htmlspecialchars(strip_tags($data->fullname));
 $username   = htmlspecialchars(strip_tags($data->username));
 $password   = htmlspecialchars(strip_tags($data->password));
 $email      = htmlspecialchars(strip_tags($data->email));
 $date       = date("Y-m-d H:i:s");
+
 
 
 // Call the related class
@@ -35,7 +37,8 @@ $auth = new Authentication($db);
 $auth->setUsername($username)
     ->setPassword($password)
     ->setEmail($email)
-    ->setRegisterDate($date);
+    ->setRegisterDate($date)
+    ->setFullname($fullname);
 
 $create_code = $auth->create();
 

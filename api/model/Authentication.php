@@ -70,11 +70,12 @@ class Authentication extends Core\User {
             return $this->BLANK_CODE;
         }
 
-        if(!Functions::checkEmail($this->getUEmail()))
+        // check mail
+        if(!Functions::checkEmail($this->getEmail()))
         {
             return $this->INVALID_EMAIL_FORMAT;
         }
-       
+
         // is there a user in the db?
         $query = 'SELECT COUNT(*) as inDb FROM ' . $this->table . ' WHERE Username = :Username OR Email = :Email LIMIT 1';
         // prepare statement
@@ -91,13 +92,15 @@ class Authentication extends Core\User {
         }
         else
         {
+            
             // create the user
-            $query = 'INSERT INTO '. $this->table .' (Username, Email, Password, RegisterDate) VALUES (:Username, :Email, :Password, :RegisterDate)';
+            $query = 'INSERT INTO '. $this->table .' (Username, Email, Password, RegisterDate, Fullname) VALUES (:Username, :Email, :Password, :RegisterDate, :Fullname)';
             
             // prepare statement
             $statement = $this->conn->prepare($query);
                 
             // bind parameters
+            $statement->bindParam(':Fullname', $this->getFullname());
             $statement->bindParam(':Username', $this->getUsername());
             $statement->bindParam(':Email', $this->getEmail());
             $statement->bindParam(':RegisterDate', $this->getRegisterDate());

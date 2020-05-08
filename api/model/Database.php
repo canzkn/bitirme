@@ -9,10 +9,10 @@
 
 class Database {
     // Database properties
-    private $host       = "srvc14.turhost.com";
-    private $db_name    = "canozkan_kavramapp";
-    private $db_user    = "canozkan_kavrama";
-    private $db_pass    = "4eD!e!5K";
+    private $host       = "localhost";
+    private $db_name    = "kavramapp";
+    private $db_user    = "root";
+    private $db_pass    = "";
     private $connection;
 
     // Connection function.

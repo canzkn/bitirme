@@ -12,6 +12,7 @@ export class SignupPage implements OnInit {
 
   // form data object
   formData = {
+    fullname : '',
     username : '',
     email : '',
     password : '',
@@ -32,6 +33,7 @@ export class SignupPage implements OnInit {
   checkFields(): boolean
   {
     // set clear variable
+    let fullname = this.formData.fullname.trim();
     let username = this.formData.username.trim();
     let password = this.formData.password.trim();
     let passwordConfirm = this.formData.passwordConfirm.trim();
@@ -40,6 +42,7 @@ export class SignupPage implements OnInit {
 
     // check blanks
     if(
+      fullname === "" ||
       username === "" ||
       password === "" ||
       passwordConfirm === "" ||
@@ -89,6 +92,7 @@ export class SignupPage implements OnInit {
     {
       this.auth.signup(JSON.stringify(this.formData)).subscribe(
         (res : any) => {
+          console.log(res)
           if(res.message == 'INVALID_EMAIL_FORMAT')
           {
             this.toastService.error("Geçersiz E-Posta Formatı");
@@ -122,6 +126,7 @@ export class SignupPage implements OnInit {
 
   clearFormData()
   {
+    this.formData.fullname = ''
     this.formData.username = ''
     this.formData.email = ''
     this.formData.password = ''

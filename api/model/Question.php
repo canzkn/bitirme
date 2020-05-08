@@ -169,8 +169,9 @@ class QuestionOperations extends Core\Question {
              * TODO : filtreleme işlemleri bu alanda yapılacak.
              */
 
-            $filterQueries = array();
+            
 
+            $filterQueries = array();
             $unanswered = $filter->unanswered; // +
             $acceptedanswer = $filter->acceptedanswer; // +
             $sortCheck = $filter->sortCheck; // +
@@ -225,6 +226,7 @@ class QuestionOperations extends Core\Question {
                 // execute query
                 $statement->execute();
                 $datas = $statement->fetchAll(PDO::FETCH_ASSOC);
+                
                 $myTags = array();
                 foreach($datas as $data)
                 {
@@ -232,6 +234,7 @@ class QuestionOperations extends Core\Question {
                 }
                 // get questions id by my tags
                 $myFollowQuestionQuery = 'SELECT DISTINCT QuestionID FROM ' . $this->tables[1] . ' WHERE TagID in (' . implode(',', $myTags) . ')';
+                           
                 // prepare statement
                 $statement = $this->conn->prepare($myFollowQuestionQuery);
                 // execute query

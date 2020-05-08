@@ -21,6 +21,12 @@
       <ion-list lines="none" class="bg-transparent ion-no-margin ion-no-padding">
         <!-- text input -->
         <ion-item color="none" lines="none" class="ion-no-margin ion-no-padding">
+          <ion-input required type="text" placeholder="Ad Soyad" [(ngModel)]="formData.fullname" [ngModelOptions]="{standalone: true}" ></ion-input>
+        </ion-item>
+        <!--#text input -->
+
+        <!-- text input -->
+        <ion-item color="none" lines="none" class="ion-no-margin ion-no-padding">
           <ion-input required type="text" placeholder="Kullanıcı Adı" [(ngModel)]="formData.username" [ngModelOptions]="{standalone: true}" ></ion-input>
         </ion-item>
         <!--#text input -->

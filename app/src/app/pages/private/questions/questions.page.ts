@@ -103,10 +103,12 @@ export class QuestionsPage {
 
   applyFilter()
   {
-    // console.log(JSON.stringify(this.postData))
+    
     this.postData.type = 'special'
+    this.postData.pageId = 1
     this.questions = [];
     this.totalData = 0;
+    console.log(JSON.stringify(this.postData))
     this.loadQuestions(this.postData)
   }
 
@@ -157,7 +159,7 @@ export class QuestionsPage {
         }
         else
         {
-          // console.log(response)
+          console.log(response)
           this.questions = this.questions.concat(response.data)
           this.totalData = response.total_data
           if(event)

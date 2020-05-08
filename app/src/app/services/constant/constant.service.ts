@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 export class ConstantService {
 
   // API URL
-  API_URL = 'https://canozkan.net/kavramapp/'
+  API_URL = 'http://localhost/bitirme/api/'
 
   // TOKEN
   AUTH = 'userData'
