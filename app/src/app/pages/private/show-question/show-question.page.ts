@@ -15,6 +15,8 @@ import { StorageService } from '../../../services/storage/storage.service';
 })
 export class ShowQuestionPage {
 
+  currentUserID;
+
   private _userDataListener: Subscription = new Subscription();
   private _viewListener: Subscription = new Subscription();
 
@@ -35,6 +37,7 @@ export class ShowQuestionPage {
     Title : '',
     Content : '',
     View : '',
+    Status : '',
     CreateDate : '',
     CreateDateString : '',
     Reputation : '',
@@ -48,7 +51,25 @@ export class ShowQuestionPage {
     Tags : [{
       TagID : '',
       TagName : '',
-    }]
+    }],
+    AnswerCount : '',
+    Answers : [
+      {
+        AnswerID : '',
+        Content : '',
+        Reputation : '',
+        Status : '',
+        QuestionID : '',
+        CreateDate : '',
+        CreateDateString : '',
+        User : {
+          Username: '',
+          Fullname: '',
+          AvatarImage: '',
+          Reputation: ''
+        },
+      }
+    ]
   }
 
   htmlText = ""
@@ -71,6 +92,9 @@ export class ShowQuestionPage {
   ionViewWillEnter()
   {
     console.log("ionViewWillEnter")
+    this.auth.userData$.subscribe(res => {
+      this.currentUserID = res.data.UserID
+    })
     this.postData.QuestionID = this.activatedRoute.snapshot.paramMap.get('id');
     this.answerPostData.QuestionID = this.activatedRoute.snapshot.paramMap.get('id');
     this.getQuestion()
@@ -120,7 +144,7 @@ export class ShowQuestionPage {
               this.storage.store('ViewedQuestions', this.ViewedQuestions)
               console.log(this.ViewedQuestions)
               // reste gönder
-              this._viewListener = this.qService.numericalOperations(res.data, {QuestionID: this.Question.QuestionID, type: 'increase', column: 'View'}).subscribe(view_response => {
+              this._viewListener = this.qService.numericalOperations(res.data, {ID: this.Question.QuestionID, type:'question', creaseType: 'increase', column: 'View'}).subscribe(view_response => {
                 console.log(view_response)
               })
             }
@@ -142,7 +166,7 @@ export class ShowQuestionPage {
                     this.storage.store('ViewedQuestions', this.ViewedQuestions)
                     console.log(this.ViewedQuestions)
                     // reste gönder
-                    this._viewListener = this.qService.numericalOperations(res.data, {QuestionID: this.Question.QuestionID, type: 'increase', column: 'View'}).subscribe(view_response => {
+                    this._viewListener = this.qService.numericalOperations(res.data, {ID: this.Question.QuestionID, type:'question', creaseType: 'increase', column: 'View'}).subscribe(view_response => {
                       console.log(view_response)
                     })
                   }
@@ -163,6 +187,7 @@ export class ShowQuestionPage {
       Title : '',
       Content : '',
       View : '',
+      Status : '',
       CreateDate : '',
       CreateDateString : '',
       Reputation : '',
@@ -176,7 +201,25 @@ export class ShowQuestionPage {
       Tags : [{
         TagID : '',
         TagName : '',
-      }]
+      }],
+      AnswerCount : '',
+      Answers : [
+        {
+          AnswerID : '',
+          Content : '',
+          Reputation : '',
+          Status : '',
+          QuestionID : '',
+          CreateDate : '',
+          CreateDateString : '',
+          User : {
+            Username: '',
+            Fullname: '',
+            AvatarImage: '',
+            Reputation: ''
+          },
+        }
+      ]
     }
 
     this.answerPostData = {
@@ -197,7 +240,8 @@ export class ShowQuestionPage {
           {
             this.toast.success("Cevabınız başarı ile eklenmiştir!");
             this.answerPostData.Content = ''
-            this.router.navigate(['/board/show-question/', this.postData.QuestionID])
+            this.ionViewWillLeave()
+            this.ionViewWillEnter()
           }
 
           if(response.message == "ADD_ANSWER_FAILED")
@@ -229,8 +273,71 @@ export class ShowQuestionPage {
     return true;
   }
 
-  compareView(val)
+  // increase or descrease question and answer
+  numericOperation(id, type, creasetype, column, index?)
   {
-    // // return this.ViewedQuestions.QuestionID == val
+    this.auth.userData$.subscribe(res => {
+      //userdata -> res.data
+      this.qService.numericalOperations(res.data, {ID: id, type: type, creaseType: creasetype, column: column}).subscribe(view_response => {
+        console.log(view_response)
+        if(view_response.message == "QUESTION_REPUTATION_INCREASE_SUCCESS")
+        {
+          if(type == "question" && creasetype == "increase")
+          {
+            var questionRep = +this.Question.Reputation
+            questionRep++
+            this.Question.Reputation = questionRep.toString()
+          }
+        }
+        if(view_response.message == "QUESTION_REPUTATION_DESCREASE_SUCCESS")
+        {
+          if(type == "question" && creasetype == "descrease")
+          {
+            var questionRep = +this.Question.Reputation
+            questionRep--
+            this.Question.Reputation = questionRep.toString()
+          }
+        }
+
+        if(view_response.message == "ANSWER_REPUTATION_INCREASE_SUCCESS")
+        {
+          if(type == "answer" && creasetype == "increase")
+          {
+            var answerRep = +this.Question.Answers[index].Reputation
+            answerRep++
+            this.Question.Answers[index].Reputation = answerRep.toString()
+          }
+        }
+        if(view_response.message == "ANSWER_REPUTATION_DESCREASE_SUCCESS")
+        {
+          if(type == "answer" && creasetype == "descrease")
+          {
+            var answerRep = +this.Question.Answers[index].Reputation
+            answerRep--
+            this.Question.Answers[index].Reputation = answerRep.toString()
+          }
+        }
+      })
+    })
+  }
+
+  // mark solved answer
+  markSolved(answerID, questionID)
+  {
+    console.log(answerID, questionID)
+    this.auth.userData$.subscribe(res => {
+      this.qService.markSolved(res.data, {AnswerID: answerID, QuestionID: questionID}).subscribe(res => {
+        console.log(res)
+        if(res.message == "ANSWER_MARKED_SUCCESS")
+        {
+          this.ionViewWillLeave()
+          this.ionViewWillEnter()
+        }
+        if(res.message == "ANSWER_MARKED_FAILED")
+        {
+
+        }
+      })
+    })
   }
 }

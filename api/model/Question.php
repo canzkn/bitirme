@@ -12,10 +12,11 @@ class QuestionOperations extends Core\Question {
     private $FAILED_CODE = 0;
     private $SUCCESS_CODE = 1;
     private $NOT_FOUND = 404;
+    private $REPUTED_BEFORE = 5;
 
     // DB Stuff
     private $conn;
-    private $tables = ['questions', 'question_tags', 'users', 'answers', 'user_interest', 'tags'];
+    private $tables = ['questions', 'question_tags', 'users', 'answers', 'user_interest', 'tags', 'reputation_log'];
 
     // Constructor with DB
     public function __construct($db) 
@@ -392,6 +393,31 @@ class QuestionOperations extends Core\Question {
         return $row;
     }
 
+    // Answer Manipulation
+    public function answerManipulation($row)
+    {
+        for($i = 0; $i < count($row); $i++)
+        {
+            $row[$i]['CreateDateString'] = Functions::time_convert2($row[$i]['CreateDate']);
+
+            // insert username
+            $query = 'SELECT Username, Fullname, AvatarImage, Reputation FROM ' . $this->tables[2] . ' WHERE UserID = :UserID LIMIT 1';
+            // prepare statement
+            $statement = $this->conn->prepare($query);
+            // bind param
+            $statement->bindParam(':UserID', $row[$i]['UserID']);
+            // execute query
+            $statement->execute();
+            $user = $statement->fetch(PDO::FETCH_ASSOC);
+            $user['UserID'] = $row[$i]['UserID'];
+            $row[$i]['User'] = $user;
+            unset($row[$i]['UserID']);
+
+        }
+
+        return $row;
+    }
+
     // Get Single Question
     public function getQuestion()
     {
@@ -427,7 +453,7 @@ class QuestionOperations extends Core\Question {
         $result['UpdateDate'] = Functions::time_convert($result['UpdateDate']);
         
 
-        unset($result['Status']);
+        // unset($result['Status']);
         unset($result['AnswerUserID']);
 
         // get user info
@@ -452,6 +478,62 @@ class QuestionOperations extends Core\Question {
         $statement->execute();
         $tags_data = $statement->fetchAll(PDO::FETCH_ASSOC);
         $result['Tags'] = $tags_data;
+
+        //get answers
+        $totalAnswersQuery = 'SELECT COUNT(*) FROM ' . $this->tables[3] . ' WHERE QuestionID = :QuestionID';
+        // prepare statement
+        $statement = $this->conn->prepare($totalAnswersQuery);
+        // bind param
+        $statement->bindParam(':QuestionID', $this->getQuestionID());
+        // execute query
+        $statement->execute();
+        $answerCount = $statement->fetchColumn();
+        $result['AnswerCount'] = $answerCount;
+        $answers = array();
+        if($answerCount > 0)
+        {
+            if($result['Status'] > 0)
+            {
+                // get solved answer first
+                $solvedAnswerQuery = 'SELECT * FROM ' . $this->tables[3] . ' WHERE QuestionID = :QuestionID AND Status > 0';
+                // prepare statement
+                $statement = $this->conn->prepare($solvedAnswerQuery);
+                // bind param
+                $statement->bindParam(':QuestionID', $this->getQuestionID());
+                // execute query
+                $statement->execute();
+                $solvedAnswer = $statement->fetch(PDO::FETCH_ASSOC);
+                
+                $AnswersQuery = 'SELECT * FROM ' . $this->tables[3] . ' WHERE QuestionID = :QuestionID AND AnswerID NOT IN ('.$solvedAnswer['AnswerID'].') ORDER BY CreateDate DESC';
+                // prepare statement
+                $statement = $this->conn->prepare($AnswersQuery);
+                // bind param
+                $statement->bindParam(':QuestionID', $this->getQuestionID());
+                // execute query
+                $statement->execute();
+                $others = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $answers = $others;
+                array_unshift($answers, $solvedAnswer);
+            }
+            else
+            {
+                $AnswersQuery = 'SELECT * FROM ' . $this->tables[3] . ' WHERE QuestionID = :QuestionID ORDER BY CreateDate DESC';
+                // prepare statement
+                $statement = $this->conn->prepare($AnswersQuery);
+                // bind param
+                $statement->bindParam(':QuestionID', $this->getQuestionID());
+                // execute query
+                $statement->execute();
+                $others = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $answers = $others;
+            }
+        }
+
+        $answers = $this->answerManipulation($answers);
+        
+        
+        $result['Answers'] = $answers;
+        
         return $result;
     }
 
@@ -474,6 +556,22 @@ class QuestionOperations extends Core\Question {
             return $this->NOT_FOUND;
         }
 
+        // reputed before?
+        $reputedQuery = 'SELECT COUNT(*) FROM ' . $this->tables[6] . ' WHERE ID = :QuestionID AND UserID = :UserID AND Type = \'question\' LIMIT 1';
+        
+        // prepare statement
+        $statement = $this->conn->prepare($reputedQuery);
+        // bind param
+        $statement->bindParam(':QuestionID', $this->getQuestionID());
+        $statement->bindParam(':UserID', $this->getUserID());
+        // execute query
+        $statement->execute();
+        $reputed = $statement->fetchColumn();
+        
+        if($reputed > 0)
+        {
+            return $this->REPUTED_BEFORE;
+        }
 
         if($type == "increase")
         {
@@ -495,6 +593,18 @@ class QuestionOperations extends Core\Question {
         // execute query
         if($statement->execute())
         {
+            // reputating
+            $reputedQuery = 'INSERT INTO ' . $this->tables[6] . ' (ID, Type, CreaseType, UserID, ReputationDate) VALUES (:ID, \'question\', :CreaseType, :UserID, :ReputationDate)';
+            
+            // prepare statement
+            $statement = $this->conn->prepare($reputedQuery);
+            // bind param
+            $statement->bindParam(':ID', $this->getQuestionID());
+            $statement->bindParam(':CreaseType', $type);
+            $statement->bindParam(':UserID', $this->getUserID());
+            $statement->bindParam(':ReputationDate', date("Y-m-d H:i:s"));
+            // execute query
+            $statement->execute();
             return $this->SUCCESS_CODE;
         }
 

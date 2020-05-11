@@ -34,16 +34,16 @@
       <div class="post-layout">
         <div class="votecell post-layout-left">
           <div class="voting-container">
-            <ion-button mode="ios" class="icon-button"><ion-icon slot="icon-only" name="caret-up-outline"></ion-icon></ion-button>
+            <ion-button mode="ios" class="icon-button" (click) = "numericOperation(Question.QuestionID, 'question', 'increase', 'Reputation')"><ion-icon slot="icon-only" name="caret-up-outline"></ion-icon></ion-button>
             <ion-label>{{ Question.Reputation }}</ion-label>
-            <ion-button mode="ios" class="icon-button"><ion-icon slot="icon-only" name="caret-down-outline"></ion-icon></ion-button>
+            <ion-button mode="ios" class="icon-button" (click) = "numericOperation(Question.QuestionID, 'question', 'descrease', 'Reputation')"><ion-icon slot="icon-only" name="caret-down-outline"></ion-icon></ion-button>
           </div>
         </div>
         <div class="postcell post-layout-right" [innerHtml]="Question.Content"></div>
       </div>
     </div>
     <div class="from-user asker">
-      <ion-item color="none" lines="none">
+      <ion-item color="none" lines="none" routerLink = "/board/profile/{{Question.User.UserID}}">
         <ion-avatar slot="start">
           <img src="{{API_URL}}{{Question.User.AvatarImage}}">
         </ion-avatar>
@@ -62,72 +62,37 @@
   <!---------------- ANSWERS ---------------------->
 
   <ion-toolbar class="answer">
-    <ion-title>26 Cevap</ion-title>
+    <ion-title>{{ Question.AnswerCount }} Cevap</ion-title>
   </ion-toolbar>
 
-  <div class="answer">
+  <div class="answer" *ngFor="let answer of Question.Answers; let i = index">
     <!-- question content -->
     <div class="question-content">
       <div class="post-layout">
         <div class="votecell post-layout-left">
-          <div class="voting-container">
-            <ion-button mode="ios" class="icon-button"><ion-icon slot="icon-only" name="caret-up-outline"></ion-icon></ion-button>
-            <ion-label>0</ion-label>
-            <ion-button mode="ios" class="icon-button"><ion-icon slot="icon-only" name="caret-down-outline"></ion-icon></ion-button>
-            <ion-button mode="ios" class="icon-button check-mark"><ion-icon name="checkmark-circle-sharp"></ion-icon></ion-button>
+          <div [class]="Question.Status == '1' && answer.Status == '1' ? 'voting-container solved-container' : 'voting-container'">
+            <ion-button [class]="Question.Status == '1' && answer.Status == '1' ? 'icon-button solved-white' : 'icon-button'" mode="ios" (click) = "numericOperation(answer.AnswerID, 'answer', 'increase', 'Reputation', i)"><ion-icon slot="icon-only" name="caret-up-outline"></ion-icon></ion-button>
+            <ion-label [class]="Question.Status == '1' && answer.Status == '1' ? 'solved-white' : ''">{{ answer.Reputation }}</ion-label>
+            <ion-button [class]="Question.Status == '1' && answer.Status == '1' ? 'icon-button solved-white' : 'icon-button'" mode="ios" (click) = "numericOperation(answer.AnswerID, 'answer', 'descrease', 'Reputation', i)"><ion-icon slot="icon-only" name="caret-down-outline"></ion-icon></ion-button>
+            <ion-button *ngIf = "Question.Status == '0' && currentUserID == Question.User.UserID" (click) = "markSolved(answer.AnswerID, Question.QuestionID)" mode="ios" class="icon-button check-mark"><ion-icon name="checkmark-circle-sharp"></ion-icon></ion-button>
+            <ion-button *ngIf = "Question.Status == '1' && answer.Status == '1'" mode="ios" class="icon-button check-mark"><ion-icon class="solved-white" name="checkmark-circle-sharp"></ion-icon></ion-button>
           </div>
         </div>
-        <div class="postcell post-layout-right">
-          Lorem Ipsum, dizgi ve baskı endüstrisinde kullanılan mıgır metinlerdir. Lorem Ipsum, adı bilinmeyen bir matbaacının bir hurufat numune kitabı oluşturmak üzere bir yazı galerisini alarak karıştırdığı 1500'lerden beri endüstri standardı sahte metinler olarak kullanılmıştır. Beşyüz yıl boyunca varlığını sürdürmekle kalmamış, aynı zamanda pek değişmeden elektronik dizgiye de sıçramıştır. 1960'larda Lorem Ipsum pasajları da içeren Letraset yapraklarının yayınlanması ile ve yakın zamanda Aldus PageMaker gibi Lorem Ipsum sürümleri içeren masaüstü yayıncılık yazılımları ile popüler olmuştur.
-
-
+        <div class="postcell post-layout-right" [innerHtml]="answer.Content">
+          
         </div>
       </div>
     </div>
     <div class="from-user">
-      <ion-item color="none" lines="none">
+      <ion-item color="none" lines="none" routerLink = "/board/profile/{{answer.User.UserID}}">
         <ion-avatar slot="start">
-          <img src="https://gravatar.com/avatar">
+          <img src="{{API_URL}}{{answer.User.AvatarImage}}">
         </ion-avatar>
         <ion-label>
-          <h3>Eray Özkan</h3>
-          <p><b>10</b> Puan</p>
+          <h3>{{answer.User.Fullname}}</h3>
+          <p><b>{{answer.User.Reputation}}</b> Puan</p>
         </ion-label>
-        <ion-note slot="end" mode="md">2 Nisan 2020 22:24 <br>tarihinde cevapladı</ion-note>
-      </ion-item>
-    </div>
-    <!--#question content -->
-  </div>
-
-  <div class="answer">
-    <!-- question content -->
-    <div class="question-content">
-      <div class="post-layout">
-        <div class="votecell post-layout-left">
-          <div class="voting-container">
-            <ion-button mode="ios" class="icon-button"><ion-icon slot="icon-only" name="caret-up-outline"></ion-icon></ion-button>
-            <ion-label>0</ion-label>
-            <ion-button mode="ios" class="icon-button"><ion-icon slot="icon-only" name="caret-down-outline"></ion-icon></ion-button>
-            <ion-button mode="ios" class="icon-button check-mark"><ion-icon name="checkmark-circle-sharp"></ion-icon></ion-button>
-          </div>
-        </div>
-        <div class="postcell post-layout-right">
-          Lorem Ipsum, dizgi ve baskı endüstrisinde kullanılan mıgır metinlerdir. Lorem Ipsum, adı bilinmeyen bir matbaacının bir hurufat numune kitabı oluşturmak üzere bir yazı galerisini alarak karıştırdığı 1500'lerden beri endüstri standardı sahte metinler olarak kullanılmıştır. Beşyüz yıl boyunca varlığını sürdürmekle kalmamış, aynı zamanda pek değişmeden elektronik dizgiye de sıçramıştır. 1960'larda Lorem Ipsum pasajları da içeren Letraset yapraklarının yayınlanması ile ve yakın zamanda Aldus PageMaker gibi Lorem Ipsum sürümleri içeren masaüstü yayıncılık yazılımları ile popüler olmuştur.
-
-
-        </div>
-      </div>
-    </div>
-    <div class="from-user">
-      <ion-item color="none" lines="none">
-        <ion-avatar slot="start">
-          <img src="https://gravatar.com/avatar">
-        </ion-avatar>
-        <ion-label>
-          <h3>Eray Özkan</h3>
-          <p><b>10</b> Puan</p>
-        </ion-label>
-        <ion-note slot="end" mode="md">2 Nisan 2020 22:24 <br>tarihinde cevapladı</ion-note>
+        <ion-note slot="end" mode="md">{{answer.CreateDateString}} <br>tarihinde cevapladı</ion-note>
       </ion-item>
     </div>
     <!--#question content -->

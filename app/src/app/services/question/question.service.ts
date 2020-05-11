@@ -60,4 +60,12 @@ export class QuestionService {
       headers: {'Authorization': 'UserID='+ auth.UserID +'; token='+ auth.Token +';'}
     })
   }
+
+  // mark solved answer
+  markSolved(auth, post_data) : Observable<any>
+  {
+    return this.http.post(this.constantService.API_URL + 'question/marksolved', post_data, {
+      headers: {'Authorization': 'UserID='+ auth.UserID +'; token='+ auth.Token +';'}
+    })
+  }
 }
