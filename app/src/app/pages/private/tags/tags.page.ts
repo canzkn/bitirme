@@ -35,6 +35,7 @@ export class TagsPage {
   {
     console.log("ionViewWillLeave")
     this.tags = [];
+    this.defaultSegment = 'popular'
   }
 
   // segment change
