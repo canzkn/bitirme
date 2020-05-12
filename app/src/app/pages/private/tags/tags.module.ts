@@ -8,14 +8,15 @@ import { TagsPageRoutingModule } from './tags-routing.module';
 
 import { TagsPage } from './tags.page';
 import { ComponentsModule } from '../../../components/components.module';
-
+import { PipesModule } from '../../../pipes/pipes.module';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     TagsPageRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    PipesModule
   ],
   declarations: [TagsPage]
 })

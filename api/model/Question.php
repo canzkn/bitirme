@@ -319,6 +319,10 @@ class QuestionOperations extends Core\Question {
 
         $return_data = array();
         $return_data['total_page'] = $total_page;
+        if($total_data == false)
+        {
+            $total_data = 0;
+        }
         $return_data['total_data'] = $total_data;
         $return_data['data'] = $this->dataManipulation($row);
 

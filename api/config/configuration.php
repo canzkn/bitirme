@@ -8,7 +8,7 @@
  */
     
 // Error Reporting and Set Time Limit
-error_reporting(0); // Hide error
+// error_reporting(0); // Hide error
 set_time_limit(0);
 
 // Sessions & Ob_Start & Date

@@ -23,18 +23,15 @@
       <!-- search and filter -->
       <ion-row>
         <ion-col size="12" size-md>
-          <ion-searchbar mode="ios" animated placeholder="bir etiket giriniz."></ion-searchbar>
+          <ion-searchbar mode="ios" animated placeholder="bir etiket giriniz." (ionChange)="filterText($event)"></ion-searchbar>
         </ion-col>
         <ion-col size="12" size-md class="ion-align-self-center">
-          <ion-segment color="dark" mode="ios" value="interest">
-            <ion-segment-button value="interest">
+          <ion-segment color="dark" mode="ios" value="{{defaultSegment}}" (ionChange)="segmentChanged($event)">
+            <ion-segment-button value="popular">
               <ion-label>Popüler</ion-label>
             </ion-segment-button>
-            <ion-segment-button value="hot">
+            <ion-segment-button value="asc">
               <ion-label>A-Z</ion-label>
-            </ion-segment-button>
-            <ion-segment-button value="week">
-              <ion-label>Yeni</ion-label>
             </ion-segment-button>
           </ion-segment>
         </ion-col>
@@ -42,306 +39,21 @@
       <!--#search and filter -->
 
       <ion-row>
-        <ion-col size="12" size-md>
+        <ion-col *ngFor="let tag of tags | tagsFilter : textFilter" size="12" size-md>
           <!-- tags -->
             <div class="tag-area">
               <div class="icon">
-                <ion-chip color="primary">
+                <ion-chip color="primary" routerLink="/board/tag/{{tag.TagID}}/{{tag.TagName}}">
                   <ion-icon name="pricetag"></ion-icon>
-                  <ion-label>javascript</ion-label>
+                  <ion-label>{{tag.TagName}}</ion-label>
                 </ion-chip>
               </div>
               <div class="tag-content">
-                JavaScript, yaygın olarak web tarayıcılarında kullanılmakta olan dinamik bir programlama dilidir. JavaScript ile yazılan istemci tarafı betikler sayesinde tarayıcının kullanıcıyla...
+                {{tag.TagInformation}}
               </div>
               <div class="tag-bottom">
-                <span class="tag-questions">1965762 soru</span>
-                <span class="tag-activity">918 bugün, 5224 bu hafta</span>
-              </div>
-            </div>
-          <!--#tags -->
-        </ion-col>
-        <ion-col size="12" size-md>
-          <!-- tags -->
-            <div class="tag-area">
-              <div class="icon">
-                <ion-chip color="primary">
-                  <ion-icon name="pricetag"></ion-icon>
-                  <ion-label>javascript</ion-label>
-                </ion-chip>
-              </div>
-              <div class="tag-content">
-                JavaScript, yaygın olarak web tarayıcılarında kullanılmakta olan dinamik bir programlama dilidir. JavaScript ile yazılan istemci tarafı betikler sayesinde tarayıcının kullanıcıyla...
-              </div>
-              <div class="tag-bottom">
-                <span class="tag-questions">1965762 soru</span>
-                <span class="tag-activity">918 bugün, 5224 bu hafta</span>
-              </div>
-            </div>
-          <!--#tags -->
-        </ion-col>
-        <ion-col size="12" size-md>
-          <!-- tags -->
-            <div class="tag-area">
-              <div class="icon">
-                <ion-chip color="primary">
-                  <ion-icon name="pricetag"></ion-icon>
-                  <ion-label>javascript</ion-label>
-                </ion-chip>
-              </div>
-              <div class="tag-content">
-                JavaScript, yaygın olarak web tarayıcılarında kullanılmakta olan dinamik bir programlama dilidir. JavaScript ile yazılan istemci tarafı betikler sayesinde tarayıcının kullanıcıyla...
-              </div>
-              <div class="tag-bottom">
-                <span class="tag-questions">1965762 soru</span>
-                <span class="tag-activity">918 bugün, 5224 bu hafta</span>
-              </div>
-            </div>
-          <!--#tags -->
-        </ion-col>
-        <ion-col size="12" size-md>
-          <!-- tags -->
-            <div class="tag-area">
-              <div class="icon">
-                <ion-chip color="primary">
-                  <ion-icon name="pricetag"></ion-icon>
-                  <ion-label>javascript</ion-label>
-                </ion-chip>
-              </div>
-              <div class="tag-content">
-                JavaScript, yaygın olarak web tarayıcılarında kullanılmakta olan dinamik bir programlama dilidir. 
-              </div>
-              <div class="tag-bottom">
-                <span class="tag-questions">1965762 soru</span>
-                <span class="tag-activity">918 bugün, 5224 bu hafta</span>
-              </div>
-            </div>
-          <!--#tags -->
-        </ion-col>
-        <ion-col size="12" size-md>
-          <!-- tags -->
-            <div class="tag-area">
-              <div class="icon">
-                <ion-chip color="primary">
-                  <ion-icon name="pricetag"></ion-icon>
-                  <ion-label>javascript</ion-label>
-                </ion-chip>
-              </div>
-              <div class="tag-content">
-                JavaScript, yaygın olarak web tarayıcılarında kullanılmakta olan dinamik bir programlama dilidir. JavaScript ile yazılan istemci tarafı betikler sayesinde tarayıcının kullanıcıyla...
-              </div>
-              <div class="tag-bottom">
-                <span class="tag-questions">1965762 soru</span>
-                <span class="tag-activity">918 bugün, 5224 bu hafta</span>
-              </div>
-            </div>
-          <!--#tags -->
-        </ion-col>
-        <ion-col size="12" size-md>
-          <!-- tags -->
-            <div class="tag-area">
-              <div class="icon">
-                <ion-chip color="primary">
-                  <ion-icon name="pricetag"></ion-icon>
-                  <ion-label>javascript</ion-label>
-                </ion-chip>
-              </div>
-              <div class="tag-content">
-                JavaScript, yaygın olarak web tarayıcılarında kullanılmakta olan dinamik bir programlama dilidir. JavaScript ile yazılan istemci tarafı betikler sayesinde tarayıcının kullanıcıyla...
-              </div>
-              <div class="tag-bottom">
-                <span class="tag-questions">1965762 soru</span>
-                <span class="tag-activity">918 bugün, 5224 bu hafta</span>
-              </div>
-            </div>
-          <!--#tags -->
-        </ion-col>
-        <ion-col size="12" size-md>
-          <!-- tags -->
-            <div class="tag-area">
-              <div class="icon">
-                <ion-chip color="primary">
-                  <ion-icon name="pricetag"></ion-icon>
-                  <ion-label>javascript</ion-label>
-                </ion-chip>
-              </div>
-              <div class="tag-content">
-                JavaScript, yaygın olarak web tarayıcılarında kullanılmakta olan dinamik bir programlama dilidir. JavaScript ile yazılan istemci tarafı betikler sayesinde tarayıcının kullanıcıyla...
-              </div>
-              <div class="tag-bottom">
-                <span class="tag-questions">1965762 soru</span>
-                <span class="tag-activity">918 bugün, 5224 bu hafta</span>
-              </div>
-            </div>
-          <!--#tags -->
-        </ion-col>
-        <ion-col size="12" size-md>
-          <!-- tags -->
-            <div class="tag-area">
-              <div class="icon">
-                <ion-chip color="primary">
-                  <ion-icon name="pricetag"></ion-icon>
-                  <ion-label>javascript</ion-label>
-                </ion-chip>
-              </div>
-              <div class="tag-content">
-                JavaScript, yaygın olarak web tarayıcılarında kullanılmakta olan dinamik bir programlama dilidir. 
-              </div>
-              <div class="tag-bottom">
-                <span class="tag-questions">1965762 soru</span>
-                <span class="tag-activity">918 bugün, 5224 bu hafta</span>
-              </div>
-            </div>
-          <!--#tags -->
-        </ion-col>
-        <ion-col size="12" size-md>
-          <!-- tags -->
-            <div class="tag-area">
-              <div class="icon">
-                <ion-chip color="primary">
-                  <ion-icon name="pricetag"></ion-icon>
-                  <ion-label>javascript</ion-label>
-                </ion-chip>
-              </div>
-              <div class="tag-content">
-                JavaScript, yaygın olarak web tarayıcılarında kullanılmakta olan dinamik bir programlama dilidir. JavaScript ile yazılan istemci tarafı betikler sayesinde tarayıcının kullanıcıyla...
-              </div>
-              <div class="tag-bottom">
-                <span class="tag-questions">1965762 soru</span>
-                <span class="tag-activity">918 bugün, 5224 bu hafta</span>
-              </div>
-            </div>
-          <!--#tags -->
-        </ion-col>
-        <ion-col size="12" size-md>
-          <!-- tags -->
-            <div class="tag-area">
-              <div class="icon">
-                <ion-chip color="primary">
-                  <ion-icon name="pricetag"></ion-icon>
-                  <ion-label>javascript</ion-label>
-                </ion-chip>
-              </div>
-              <div class="tag-content">
-                JavaScript, yaygın olarak web tarayıcılarında kullanılmakta olan dinamik bir programlama dilidir. JavaScript ile yazılan istemci tarafı betikler sayesinde tarayıcının kullanıcıyla...
-              </div>
-              <div class="tag-bottom">
-                <span class="tag-questions">1965762 soru</span>
-                <span class="tag-activity">918 bugün, 5224 bu hafta</span>
-              </div>
-            </div>
-          <!--#tags -->
-        </ion-col>
-        <ion-col size="12" size-md>
-          <!-- tags -->
-            <div class="tag-area">
-              <div class="icon">
-                <ion-chip color="primary">
-                  <ion-icon name="pricetag"></ion-icon>
-                  <ion-label>javascript</ion-label>
-                </ion-chip>
-              </div>
-              <div class="tag-content">
-                JavaScript, yaygın olarak web tarayıcılarında kullanılmakta olan dinamik bir programlama dilidir. JavaScript ile yazılan istemci tarafı betikler sayesinde tarayıcının kullanıcıyla...
-              </div>
-              <div class="tag-bottom">
-                <span class="tag-questions">1965762 soru</span>
-                <span class="tag-activity">918 bugün, 5224 bu hafta</span>
-              </div>
-            </div>
-          <!--#tags -->
-        </ion-col>
-        <ion-col size="12" size-md>
-          <!-- tags -->
-            <div class="tag-area">
-              <div class="icon">
-                <ion-chip color="primary">
-                  <ion-icon name="pricetag"></ion-icon>
-                  <ion-label>javascript</ion-label>
-                </ion-chip>
-              </div>
-              <div class="tag-content">
-                JavaScript, yaygın olarak web tarayıcılarında kullanılmakta olan dinamik bir programlama dilidir. 
-              </div>
-              <div class="tag-bottom">
-                <span class="tag-questions">1965762 soru</span>
-                <span class="tag-activity">918 bugün, 5224 bu hafta</span>
-              </div>
-            </div>
-          <!--#tags -->
-        </ion-col>
-        <ion-col size="12" size-md>
-          <!-- tags -->
-            <div class="tag-area">
-              <div class="icon">
-                <ion-chip color="primary">
-                  <ion-icon name="pricetag"></ion-icon>
-                  <ion-label>javascript</ion-label>
-                </ion-chip>
-              </div>
-              <div class="tag-content">
-                JavaScript, yaygın olarak web tarayıcılarında kullanılmakta olan dinamik bir programlama dilidir. JavaScript ile yazılan istemci tarafı betikler sayesinde tarayıcının kullanıcıyla...
-              </div>
-              <div class="tag-bottom">
-                <span class="tag-questions">1965762 soru</span>
-                <span class="tag-activity">918 bugün, 5224 bu hafta</span>
-              </div>
-            </div>
-          <!--#tags -->
-        </ion-col>
-        <ion-col size="12" size-md>
-          <!-- tags -->
-            <div class="tag-area">
-              <div class="icon">
-                <ion-chip color="primary">
-                  <ion-icon name="pricetag"></ion-icon>
-                  <ion-label>javascript</ion-label>
-                </ion-chip>
-              </div>
-              <div class="tag-content">
-                JavaScript, yaygın olarak web tarayıcılarında kullanılmakta olan dinamik bir programlama dilidir. JavaScript ile yazılan istemci tarafı betikler sayesinde tarayıcının kullanıcıyla...
-              </div>
-              <div class="tag-bottom">
-                <span class="tag-questions">1965762 soru</span>
-                <span class="tag-activity">918 bugün, 5224 bu hafta</span>
-              </div>
-            </div>
-          <!--#tags -->
-        </ion-col>
-        <ion-col size="12" size-md>
-          <!-- tags -->
-            <div class="tag-area">
-              <div class="icon">
-                <ion-chip color="primary">
-                  <ion-icon name="pricetag"></ion-icon>
-                  <ion-label>javascript</ion-label>
-                </ion-chip>
-              </div>
-              <div class="tag-content">
-                JavaScript, yaygın olarak web tarayıcılarında kullanılmakta olan dinamik bir programlama dilidir. JavaScript ile yazılan istemci tarafı betikler sayesinde tarayıcının kullanıcıyla...
-              </div>
-              <div class="tag-bottom">
-                <span class="tag-questions">1965762 soru</span>
-                <span class="tag-activity">918 bugün, 5224 bu hafta</span>
-              </div>
-            </div>
-          <!--#tags -->
-        </ion-col>
-        <ion-col size="12" size-md>
-          <!-- tags -->
-            <div class="tag-area">
-              <div class="icon">
-                <ion-chip color="primary">
-                  <ion-icon name="pricetag"></ion-icon>
-                  <ion-label>javascript</ion-label>
-                </ion-chip>
-              </div>
-              <div class="tag-content">
-                JavaScript, yaygın olarak web tarayıcılarında kullanılmakta olan dinamik bir programlama dilidir. 
-              </div>
-              <div class="tag-bottom">
-                <span class="tag-questions">1965762 soru</span>
-                <span class="tag-activity">918 bugün, 5224 bu hafta</span>
+                <span class="tag-questions">{{tag.QuestionCount}} soru</span>
+                <span class="tag-activity">{{tag.TodayCount}} bugün, {{tag.WeekCount}} bu hafta</span>
               </div>
             </div>
           <!--#tags -->

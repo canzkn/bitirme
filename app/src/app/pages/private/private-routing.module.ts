@@ -57,6 +57,10 @@ const routes: Routes = [
       {
         path: 'interest',
         loadChildren: () => import('./interest/interest.module').then( m => m.InterestPageModule)
+      },
+      {
+        path: 'tag/:id/:name',
+        loadChildren: () => import('./tag/tag.module').then( m => m.TagPageModule)
       }
     ]
   }

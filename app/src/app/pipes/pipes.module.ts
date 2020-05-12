@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
-import { TagPipe } from './tag.pipe'
+import { TagPipe } from './tag.pipe';
+import { TagsPipe } from './tags.pipe'
 
 
 
 @NgModule({
-  declarations: [TagPipe],
+  declarations: [TagPipe, TagsPipe],
   exports: [
-    TagPipe
+    TagPipe,
+    TagsPipe
   ]
 })
 export class PipesModule { }

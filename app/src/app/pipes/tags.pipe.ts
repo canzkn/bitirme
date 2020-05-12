@@ -1,11 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Tag } from '../models/tag.model'
+import { Tags } from '../models/tags.model'
 @Pipe({
-  name: 'tagFilter'
+  name: 'tagsFilter'
 })
-export class TagPipe implements PipeTransform {
+export class TagsPipe implements PipeTransform {
 
-  transform(tags: Tag[], text: string): Tag[] {
+  transform(tags: Tags[], text: string): Tags[] {
     if( text.length === 0) { return tags; }
 
     text = text.toLocaleLowerCase();
