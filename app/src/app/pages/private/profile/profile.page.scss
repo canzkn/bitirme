@@ -280,10 +280,10 @@ ion-toolbar.mobile {
     }
 }
 
-@media only screen and (max-width:375px)
+@media only screen and (max-width:390px)
 {
     .profile-header {
-        margin-bottom:70px!important;
+        margin-bottom:90px!important;
     }
 }
 
@@ -294,3 +294,8 @@ ion-toolbar.mobile {
     }
 }
 
+ion-badge {
+    width: 36px;
+    height: 28px;
+    line-height: 23px;
+}

@@ -7,9 +7,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./private.page.scss'],
 })
 export class PrivatePage implements OnInit {
-
+  UserID: number = 1;
   // menu items
-
   public appPages = [
     {
       title: 'Akış',
@@ -58,7 +57,10 @@ export class PrivatePage implements OnInit {
     }
   ];
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    ) { 
+  }
 
 
   ngOnInit() {

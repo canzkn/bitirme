@@ -9,14 +9,15 @@ import { UsersPageRoutingModule } from './users-routing.module';
 import { UsersPage } from './users.page';
 
 import { ComponentsModule } from '../../../components/components.module';
-
+import { PipesModule } from '../../../pipes/pipes.module';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     UsersPageRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    PipesModule
   ],
   declarations: [UsersPage]
 })

@@ -11,7 +11,7 @@
             <ion-label>
               <h3>Hoşgeldiniz,</h3>
               <p class="username">Hasan Can Özkan</p>
-              <p>Puanınız: <b class="point">1250</b></p>
+              <p>Puanınız: <b class="point"></b></p>
             </ion-label>
           </ion-item>
         </div>
@@ -33,7 +33,7 @@
         <ion-list lines="full" >
           <ion-list-header>Profil</ion-list-header>
           <ion-menu-toggle auto-hide="false" *ngFor="let p of profilePages">
-            <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
+            <ion-item [routerDirection]="'root'" [routerLink]="p.url == '/board/profile' ? '/board/profile/' + UserID : p.url">
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>
                 {{p.title}}

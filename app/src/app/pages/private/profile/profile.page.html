@@ -12,41 +12,37 @@
 <ion-content>
   <!-- profile header -->
   <div class="profile-header">
-    <div class="profile-banner profile-header-bg" style="background-image: url(https://coverfiles.alphacoders.com/116/116075.png);"></div>
+    <div class="profile-banner profile-header-bg" style="background-image: url({{API_URL}}{{profileData.CoverImage}});"></div>
     
     <div class="container">
       <div class="profile-picture-box">
-        <div class="profile-picture"><img src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200" /></div>
+        <div class="profile-picture"><img src="{{API_URL}}{{profileData.AvatarImage}}" /></div>
       </div>
 
       <div class="profile-info">
         <div class="profile-name">
-          <span>Hasan Can Özkan <span class="username">(@canveotesi)</span></span>
+          <span>{{profileData.Fullname}} <span class="username">(@{{profileData.Username}})</span></span>
         </div>
   
         <div class="contact-info">
           <div class="info">
             <span class="icon"><ion-icon name="location"></ion-icon></span>
-            <span class="text">Taşköprü, Kastamonu, Turkey</span>
+            <span class="text">{{profileData.Address}}</span>
           </div>
           <div class="info">
             <span class="icon"><ion-icon name="calendar"></ion-icon></span>
-            <span class="text">8 yıl, 3 ay'dır üye</span>
-          </div>
-          <div class="info">
-            <span class="icon"><ion-icon name="link"></ion-icon></span>
-            <span class="text">canozkan.net</span>
+            <span class="text">{{profileData.RegisterDate}} üye oldu</span>
           </div>
         </div>
 
         <div class="contact-info">
           <div class="info">
             <span class="icon"><ion-icon name="eye"></ion-icon></span>
-            <span class="text">144 profil görüntülemesi</span>
+            <span class="text">{{profileData.ProfileViews}} profil görüntülemesi</span>
           </div>
           <div class="info">
             <span class="icon"><ion-icon name="time"></ion-icon></span>
-            <span class="text">7 dakika önce son aktivite</span>
+            <span class="text">{{profileData.LastSeen}} son aktivite</span>
           </div>
         </div>
       </div>
@@ -59,19 +55,17 @@
     <ion-grid>
       <ion-row>
         <ion-col size="12" size-md><span class="icon"><ion-icon name="location"></ion-icon></span>
-          <span class="text">Taşköprü, Kastamonu, Turkey</span></ion-col>
+          <span class="text">{{profileData.Address}}</span></ion-col>
         <ion-col size="12" size-md><span class="icon"><ion-icon name="calendar"></ion-icon></span>
-          <span class="text">8 yıl, 3 ay'dır üye</span></ion-col>
+          <span class="text">{{profileData.RegisterDate}} üye oldu</span></ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size="12" size-md><span class="icon"><ion-icon name="link"></ion-icon></span>
-          <span class="text">canozkan.net</span></ion-col>
         <ion-col size="12" size-md><span class="icon"><ion-icon name="eye"></ion-icon></span>
-          <span class="text">144 profil görüntülemesi</span></ion-col>
+          <span class="text">{{profileData.ProfileViews}} profil görüntülemesi</span></ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="12" size-md><span class="icon"><ion-icon name="time"></ion-icon></span>
-          <span class="text">7 dakika önce son aktivite</span></ion-col>
+          <span class="text">{{profileData.LastSeen}} son aktivite</span></ion-col>
       </ion-row>
     </ion-grid>
   </div>
@@ -82,10 +76,10 @@
     <ion-toolbar mode="md" class="desktop">
       <ion-grid>
         <ion-row>
-          <ion-col><ion-title><span class="score">11,250</span> <span class="point">Puan</span></ion-title></ion-col>
-          <ion-col><ion-title><span class="score">14</span> <span class="point">Cevap</span></ion-title></ion-col>
-          <ion-col><ion-title><span class="score">0</span> <span class="point">Soru</span></ion-title></ion-col>
-          <ion-col><ion-title><span class="score">~7K</span> <span class="point">Etkileşim</span></ion-title></ion-col>
+          <ion-col><ion-title><span class="score">{{profileData.Reputation}}</span> <span class="point">Puan</span></ion-title></ion-col>
+          <ion-col><ion-title><span class="score">{{profileData.AnswerCount}}</span> <span class="point">Cevap</span></ion-title></ion-col>
+          <ion-col><ion-title><span class="score">{{profileData.AskedCount}}</span> <span class="point">Soru</span></ion-title></ion-col>
+          <ion-col><ion-title><span class="score">{{interaction}}</span> <span class="point">Etkileşim</span></ion-title></ion-col>
         </ion-row>
       </ion-grid>
     </ion-toolbar>
@@ -94,12 +88,12 @@
       <ion-toolbar mode="md" class="mobile">
         <ion-grid>
           <ion-row>
-            <ion-col><ion-title><div class="score">11,250</div> <div class="point">Puan</div></ion-title></ion-col>
-            <ion-col><ion-title><div class="score">14</div> <div class="point">Cevap</div></ion-title></ion-col>
+            <ion-col><ion-title><div class="score">{{profileData.Reputation}}</div> <div class="point">Puan</div></ion-title></ion-col>
+            <ion-col><ion-title><div class="score">{{profileData.AnswerCount}}</div> <div class="point">Cevap</div></ion-title></ion-col>
           </ion-row>
           <ion-row> 
-            <ion-col><ion-title><div class="score">0</div> <div class="point">Soru</div></ion-title></ion-col>
-            <ion-col><ion-title><div class="score">~7K</div> <div class="point">Etkileşim</div></ion-title></ion-col>
+            <ion-col><ion-title><div class="score">{{profileData.AskedCount}}</div> <div class="point">Soru</div></ion-title></ion-col>
+            <ion-col><ion-title><div class="score">{{interaction}}</div> <div class="point">Etkileşim</div></ion-title></ion-col>
           </ion-row>
         </ion-grid>
       </ion-toolbar>
@@ -114,25 +108,25 @@
         <ion-grid>
           <ion-row>
             <ion-col class="ion-no-padding">
-              <h2>Sorular <span>(1252)</span></h2>
+              <h2>Sorular <span>({{profileData.QuestionCount}})</span></h2>
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col size="12" size-md>
-              <ion-segment mode="ios" value="interest">
-                <ion-segment-button value="interest">
+              <ion-segment mode="ios" value="{{postData.filter.type}}" (ionChange)="filterSegmentChanged($event)">
+                <ion-segment-button value="all">
                   <ion-label>Tümü</ion-label>
                 </ion-segment-button>
-                <ion-segment-button value="hot">
+                <ion-segment-button value="asked">
                   <ion-label>Sordukları</ion-label>
                 </ion-segment-button>
-                <ion-segment-button value="week">
+                <ion-segment-button value="answered">
                   <ion-label>Cevapladıkları</ion-label>
                 </ion-segment-button>
               </ion-segment>
             </ion-col>
             <ion-col size="12" size-md>
-              <ion-segment mode="ios" value="popular">
+              <ion-segment mode="ios" value="{{postData.filter.sort}}" (ionChange)="sortSegmentChanged($event)">
                 <ion-segment-button value="popular">
                   <ion-label>Popüler</ion-label>
                 </ion-segment-button>
@@ -145,45 +139,10 @@
         </ion-grid>
       </ion-list-header>
   
-      <ion-item>
-        <ion-badge slot="start" color="medium">11</ion-badge>
-        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
-        <ion-label>My Item</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-badge slot="start" color="success">11</ion-badge>
-        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
-        <ion-label>My Item</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-badge slot="start" color="success">11</ion-badge>
-        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
-        <ion-label>My Item</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-badge slot="start" color="medium">11</ion-badge>
-        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
-        <ion-label>My Item</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-badge slot="start" color="success">11</ion-badge>
-        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
-        <ion-label>My Item</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-badge slot="start" color="medium">11</ion-badge>
-        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
-        <ion-label>My Item</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-badge slot="start" color="success">11</ion-badge>
-        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
-        <ion-label>My Item</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-badge slot="start" color="medium">11</ion-badge>
-        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
-        <ion-label>My Item</ion-label>
+      <ion-item *ngFor="let question of profileData.Questions" routerLink="/board/show-question/{{question.QuestionID}}">
+        <ion-badge slot="start" [color]="question.Status == '1' ? 'success' : 'medium'">{{question.Reputation}}</ion-badge>
+        <ion-note mode="md"  slot="end">{{question.UpdateDateString}}</ion-note>
+        <ion-label>{{question.Title}}</ion-label>
       </ion-item>
     </ion-list>
   </div>
@@ -196,51 +155,14 @@
         <ion-grid>
           <ion-row>
             <ion-col>
-              <h2>Etiketler <span>(1252)</span></h2>
+              <h2>Etiketler <span>({{profileData.TagCount}})</span></h2>
             </ion-col>
           </ion-row>
         </ion-grid>
       </ion-list-header>
   
-      <ion-item>
-        <ion-badge slot="start" color="medium">11</ion-badge>
-        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
-        <ion-label>My Item</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-badge slot="start" color="success">11</ion-badge>
-        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
-        <ion-label>My Item</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-badge slot="start" color="success">11</ion-badge>
-        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
-        <ion-label>My Item</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-badge slot="start" color="medium">11</ion-badge>
-        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
-        <ion-label>My Item</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-badge slot="start" color="success">11</ion-badge>
-        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
-        <ion-label>My Item</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-badge slot="start" color="medium">11</ion-badge>
-        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
-        <ion-label>My Item</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-badge slot="start" color="success">11</ion-badge>
-        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
-        <ion-label>My Item</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-badge slot="start" color="medium">11</ion-badge>
-        <ion-note mode="md"  slot="end">22 Mart 2020</ion-note>
-        <ion-label>My Item</ion-label>
+      <ion-item *ngFor="let tag of profileData.Tags" routerLink="/board/tag/{{tag.TagID}}/{{tag.TagName}}">
+        <ion-label>{{tag.TagName}}</ion-label>
       </ion-item>
     </ion-list>
   </div>
