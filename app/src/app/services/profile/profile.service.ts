@@ -29,4 +29,20 @@ export class ProfileService {
       headers: {'Authorization': 'UserID='+ auth.UserID +'; token='+ auth.Token +';'}
     })
   }
+
+  // get my profile
+  getMyProfile(auth) : Observable<any>
+  {
+    return this.http.get(this.constantService.API_URL + 'profile', {
+      headers: {'Authorization': 'UserID='+ auth.UserID +'; token='+ auth.Token +';'}
+    })
+  }
+
+  // update my profile
+  updateMyProfile(auth, post_data) : Observable<any>
+  {
+    return this.http.post(this.constantService.API_URL + 'profile/update', post_data, {
+      headers: {'Authorization': 'UserID='+ auth.UserID +'; token='+ auth.Token +';'}
+    })
+  }
 }

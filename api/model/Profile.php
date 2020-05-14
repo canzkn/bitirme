@@ -80,4 +80,56 @@ class Profile extends Core\User {
             return $this->FAILED_CODE;
         }
     }
+
+    // Get Profile Data
+    public function getProfile()
+    {
+        // query string
+        $query = 'SELECT Username, Email, Fullname, Address, AvatarImage, CoverImage FROM ' . $this->tables[0] . ' WHERE UserID = :UserID LIMIT 1';
+        // prepare statement
+        $statement = $this->conn->prepare($query);
+        // bind parameters
+        $statement->bindParam(':UserID', $this->getUserID());
+        // execute query
+        $statement->execute();
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
+        return $row;
+    }
+
+    // Update Profile
+    public function updateProfile()
+    {
+        // if password exists?
+        if($this->getPassword())
+        {
+            $pwdQuery = 'Password = :Password,';
+        }
+        else
+        {
+            $pwdQuery = '';
+        }
+
+        // query string
+        $query = 'UPDATE ' . $this->tables[0] . ' SET Email = :Email, '.$pwdQuery.' Fullname = :Fullname, Address = :Address, AvatarImage = :AvatarImage, CoverImage = :CoverImage WHERE UserID = :UserID';
+        // prepare statement
+        $statement = $this->conn->prepare($query);
+        // bind parameters
+        $statement->bindParam(':UserID', $this->getUserID());
+        $statement->bindParam(':Email', $this->getEmail());
+        if($this->getPassword())
+        {
+            $statement->bindParam(':Password', Functions::hashPassword($this->getPassword()));
+        }
+        $statement->bindParam(':Fullname', $this->getFullname());
+        $statement->bindParam(':Address', $this->getAddress());
+        $statement->bindParam(':AvatarImage', $this->getAvatarImage());
+        $statement->bindParam(':CoverImage', $this->getCoverImage());
+        // execute query
+        if($statement->execute())
+        {
+            return $this->SUCCESS_CODE;
+        }
+
+        return false;
+    }
 }

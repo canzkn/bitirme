@@ -17,12 +17,15 @@
       <ion-label>Profil Fotoğrafı</ion-label>
     </ion-list-header>
     <ion-item>
-      <div class="profile-picture-area">
+      <div class="profile-picture-area" (click) = "uploadAvatar()">
         <div class="profile-picture-box">
-          <img src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200" />
+          <img src="{{postData.AvatarImage}}" />
           <p class="edit">Fotoğrafı Düzenle</p>
         </div>
       </div>
+    </ion-item>
+    <ion-item style="display:none">
+      <input type="file" id="AvatarFile" (change)="AvatarChangeEvent($event.target.files)">
     </ion-item>
   </ion-list>
   <!--#profil fotoğrafı -->
@@ -33,55 +36,54 @@
       <ion-label>Kapak Fotoğrafı</ion-label>
     </ion-list-header>
     <ion-item>
-      <div class="cover-picture-area">
+      <div class="cover-picture-area" (click) = "uploadCover()">
         <div class="cover-picture-box">
-          <img src="https://coverfiles.alphacoders.com/116/116075.png" />
+          <img src="{{postData.CoverImage}}" />
           <p class="edit">Kapak Fotoğrafını Düzenle</p>
         </div>
       </div>
+    </ion-item>
+    <ion-item style="display:none">
+      <input type="file" id="CoverFile" (change)="CoverChangeEvent($event.target.files)">
     </ion-item>
   </ion-list>
   <!--#kapak fotoğrafı -->
 
   <!-- inputs -->
-  <form onsubmit="processForm(event)">
-    <ion-list mode="ios" lines="full" class="ion-no-margin ion-no-padding">
-      <ion-list-header> 
-        <ion-label>Hesap Bilgileri</ion-label>
-      </ion-list-header>
-      <ion-item>
-        <ion-label position="stacked">First Name <ion-text color="danger">*</ion-text></ion-label>
-        <ion-input required type="text" oninput="handleFirstNameValue(event)"></ion-input>
-      </ion-item>
+  
+  <ion-list mode="ios" lines="full" class="ion-no-margin ion-no-padding">
+    <ion-list-header> 
+      <ion-label>Hesap Bilgileri</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-label position="stacked">Kullanıcı Adı</ion-label>
+      <ion-input type="text" value="{{postData.Username}}" disabled="true"></ion-input>
+    </ion-item>
 
-      <ion-item>
-        <ion-label position="stacked">Last Name <ion-text color="danger">*</ion-text></ion-label>
-        <ion-input required type="text" oninput="handleLastNameValue(event)"></ion-input>
-      </ion-item>
-      
-      <ion-item>
-        <ion-label position="floating">Title</ion-label>
-        <ion-input></ion-input>
-      </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Şifre <ion-text color="danger">* Boş bırakırsanız mevcut şifre kullanılır.</ion-text></ion-label>
+      <ion-input type="password" [(ngModel)]="postData.Password"></ion-input>
+    </ion-item>
 
-      <ion-item>
-        <ion-label position="stacked">Address</ion-label>
-        <ion-input placeholder="Address Line 1"></ion-input>
-        <ion-input placeholder="Address Line 2"></ion-input>
-        <ion-input placeholder="City"></ion-input>
-        <ion-input placeholder="State"></ion-input>
-        <ion-input placeholder="Zip Code"></ion-input>
-      </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Ad ve Soyad <ion-text color="danger">*</ion-text></ion-label>
+      <ion-input type="text" [(ngModel)]="postData.Fullname"></ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label position="stacked">Email</ion-label>
+      <ion-input type="text" [(ngModel)]="postData.Email"></ion-input>
+    </ion-item>
 
-      <ion-item>
-        <ion-label position="stacked">Notes</ion-label>
-        <ion-textarea></ion-textarea>
-      </ion-item>
-    </ion-list>
+    <ion-item>
+      <ion-label position="stacked">Adres</ion-label>
+      <ion-input type="text" [(ngModel)]="postData.Address"></ion-input>
+    </ion-item>
+  </ion-list>
 
-    <div class="ion-padding">
-      <ion-button expand="block" type="submit" class="ion-no-margin">Create account</ion-button>
-    </div>
-  </form>
+  <div class="ion-padding">
+    <ion-button expand="full" class="ion-no-margin" (click) = "update()">Güncelle</ion-button>
+  </div>
+  
   <!--#inputs -->
 </ion-content>
