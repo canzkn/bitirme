@@ -46,7 +46,7 @@
         <!-- user -->
         <ion-col size="12" size-md>
             <ion-list>
-              <ion-item *ngFor="let user of users | userFilter : textFilter" (click) = "presentAlertConfirm(user.UserID)">
+              <ion-item *ngFor="let user of users | userFilter : textFilter" (click) = "presentAlertConfirm(user.UserID, user.Fullname)">
                 <ion-avatar slot="start">
                   <img src="{{API_URL}}{{user.AvatarImage}}">
                 </ion-avatar>

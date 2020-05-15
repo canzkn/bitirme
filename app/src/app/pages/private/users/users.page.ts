@@ -7,6 +7,7 @@ import { LoadingController } from '@ionic/angular';
 import { User } from '../../../models/user.model';
 import { ConstantService } from '../../../services/constant/constant.service'
 import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-users',
   templateUrl: './users.page.html',
@@ -26,7 +27,8 @@ export class UsersPage {
     private auth : AuthenticationService,
     private loadingController : LoadingController,
     private cService : ConstantService,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private router : Router
   ) { 
     this.auth.userData$.subscribe(res => {
       this.API_URL = this.cService.API_URL;
@@ -83,7 +85,7 @@ export class UsersPage {
       })
   }
 
-  async presentAlertConfirm(UserID) {
+  async presentAlertConfirm(UserID, Fullname) {
     
     const alert = await this.alertController.create({
       header: 'Seçiniz',
@@ -94,11 +96,12 @@ export class UsersPage {
           cssClass: 'success',
           handler: () => {
             console.log('profili gör', UserID);
+            this.router.navigate(['/board/profile/', UserID])
           }
         }, {
           text: 'Mesaj Gönder',
           handler: () => {
-            console.log('mesaj gönder', UserID);
+            this.router.navigate(['/board/message/', UserID, Fullname])
           }
         }
       ]

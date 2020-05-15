@@ -51,7 +51,7 @@ const routes: Routes = [
         loadChildren: () => import('./message-box/message-box.module').then( m => m.MessageBoxPageModule)
       },
       {
-        path: 'message',
+        path: 'message/:id/:name',
         loadChildren: () => import('./message/message.module').then( m => m.MessagePageModule)
       },
       {

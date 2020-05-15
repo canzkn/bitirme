@@ -86,6 +86,20 @@ export class EditProfilePage {
     else
     {
       //camera file upload
+      this.camera.getPicture({
+
+        sourceType: this.camera.PictureSourceType.SAVEDPHOTOALBUM,
+    
+        destinationType: this.camera.DestinationType.DATA_URL
+    
+       }).then((imageData) => {
+    
+         this.postData.AvatarImage = 'data:image/jpeg;base64,'+imageData;
+        }, (err) => {
+    
+         console.log(err);
+    
+       });
     }
   }
 
@@ -101,6 +115,20 @@ export class EditProfilePage {
     else
     {
       //camera file upload
+      this.camera.getPicture({
+
+        sourceType: this.camera.PictureSourceType.SAVEDPHOTOALBUM,
+    
+        destinationType: this.camera.DestinationType.DATA_URL
+    
+       }).then((imageData) => {
+    
+         this.postData.CoverImage = 'data:image/jpeg;base64,'+imageData;
+        }, (err) => {
+    
+         console.log(err);
+    
+       });
     }
   }
 
