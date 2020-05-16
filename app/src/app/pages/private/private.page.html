@@ -6,12 +6,12 @@
         <div class="usercp">
           <ion-item color="dark" lines="full">
             <ion-avatar slot="start">
-              <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+              <img src="{{API_URL}}{{activeProfile.AvatarImage}}">
             </ion-avatar>
             <ion-label>
               <h3>Hoşgeldiniz,</h3>
-              <p class="username">Hasan Can Özkan</p>
-              <p>Puanınız: <b class="point"></b></p>
+              <p class="username">{{activeProfile.Fullname}}</p>
+              <p>Puanınız: <b class="point">{{activeProfile.Reputation}}</b></p>
             </ion-label>
           </ion-item>
         </div>
@@ -32,11 +32,17 @@
 
         <ion-list lines="full" >
           <ion-list-header>Profil</ion-list-header>
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of profilePages">
-            <ion-item [routerDirection]="'root'" [routerLink]="p.url == '/board/profile' ? '/board/profile/' + UserID : p.url">
+          <ion-menu-toggle auto-hide="false">
+            <ion-item *ngFor="let p of profilePages" [routerDirection]="'root'" [routerLink]="p.url == '/board/profile' ? '/board/profile/' + UserID : p.url">
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>
                 {{p.title}}
+              </ion-label>
+            </ion-item>
+            <ion-item (click) = "logout()">
+              <ion-icon slot="start" name="log-out-sharp"></ion-icon>
+              <ion-label>
+                Çıkış Yap
               </ion-label>
             </ion-item>
           </ion-menu-toggle>

@@ -61,6 +61,9 @@ export class MessagePage {
       this.conversationService.getMessages(res.data, this.targetUser).subscribe(response => {
         this.conversation.Messages = response
         console.log(this.conversation.Messages)
+        setTimeout(() => {
+          this.content.scrollToBottom(200);
+        })
       })
     })
   }

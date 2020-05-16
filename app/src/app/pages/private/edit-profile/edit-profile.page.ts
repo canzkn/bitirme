@@ -69,6 +69,7 @@ export class EditProfilePage {
         {
           this.toast.success("Profiliniz başarı ile güncellendi!");
           this.loadProfile()
+          this.pService.loadActiveProfile()
         }
       })
     })

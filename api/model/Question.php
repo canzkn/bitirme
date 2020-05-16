@@ -73,6 +73,46 @@ class QuestionOperations extends Core\Question {
     {
         // question count per page
         $perPage = 10;
+
+        if($filter == "interest")
+        {
+            // get my follow tags
+            $myFollowQuery = 'SELECT TagID FROM ' .  $this->tables[4] . ' WHERE UserID = :UserID';
+            // prepare statement
+            $statement = $this->conn->prepare($myFollowQuery);
+            // bind param
+            $statement->bindParam(':UserID', $this->getUserID());
+            // execute query
+            $statement->execute();
+            $datas = $statement->fetchAll(PDO::FETCH_ASSOC);
+            
+            $myTags = array();
+            foreach($datas as $data)
+            {
+                $myTags[] = $data['TagID'];
+            }
+            // get questions id by my tags
+            $myFollowQuestionQuery = 'SELECT DISTINCT QuestionID FROM ' . $this->tables[1] . ' WHERE TagID in (' . implode(',', $myTags) . ')';
+                       
+            // prepare statement
+            $statement = $this->conn->prepare($myFollowQuestionQuery);
+            // execute query
+            $statement->execute();
+            $datas = $statement->fetchAll(PDO::FETCH_ASSOC);
+            $QuestionIds = array();
+            foreach($datas as $data)
+            {
+                $QuestionIds[] = $data['QuestionID'];
+            }
+
+            $followCheckQuery = ' WHERE QuestionID in (' . implode(',', $QuestionIds) . ')';
+
+            // get total data
+            $totalDataQuery = 'SELECT COUNT(*) FROM ' . $this->tables[0] . ' '.$followCheckQuery.' ORDER BY UpdateDate DESC';
+
+            // Get Hot Question Query
+            $QuestionQuery = 'SELECT * FROM ' . $this->tables[0] . ' '.$followCheckQuery.' ORDER BY UpdateDate DESC';
+        }
         
         if($filter == "hot")
         {

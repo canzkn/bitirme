@@ -85,7 +85,7 @@ class Profile extends Core\User {
     public function getProfile()
     {
         // query string
-        $query = 'SELECT Username, Email, Fullname, Address, AvatarImage, CoverImage FROM ' . $this->tables[0] . ' WHERE UserID = :UserID LIMIT 1';
+        $query = 'SELECT Username, Email, Fullname, Address, AvatarImage, CoverImage, Reputation FROM ' . $this->tables[0] . ' WHERE UserID = :UserID LIMIT 1';
         // prepare statement
         $statement = $this->conn->prepare($query);
         // bind parameters

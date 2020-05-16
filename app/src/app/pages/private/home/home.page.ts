@@ -15,7 +15,7 @@ export class HomePage {
   private _userDataListener: Subscription = new Subscription();
   pageId = 1;
   questions = [];
-  defaultSegment = 'hot';
+  defaultSegment = 'interest';
   currentEvent;
 
   constructor(
@@ -43,7 +43,7 @@ export class HomePage {
     this._userDataListener.unsubscribe()
     this.questions = [];
     this.pageId = 1;
-    this.defaultSegment = 'hot';
+    this.defaultSegment = 'interest';
   }
 
   // load questions

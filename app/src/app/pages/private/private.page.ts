@@ -1,13 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../../services/authenticaton/authentication.service';
+import { ProfileService } from '../../services/profile/profile.service';
+import { ConstantService } from 'src/app/services/constant/constant.service';
 
 @Component({
   selector: 'app-private',
   templateUrl: './private.page.html',
   styleUrls: ['./private.page.scss'],
 })
-export class PrivatePage implements OnInit {
-  UserID: number = 1;
+export class PrivatePage {
+
+  API_URL = ''
+
+  activeProfile = {
+    Username: '',
+    Email: '',
+    Fullname: '',
+    Address: '',
+    AvatarImage: '',
+    CoverImage: '',
+    Reputation: ''
+  }
+
+  
+  UserID;
   // menu items
   public appPages = [
     {
@@ -49,21 +66,39 @@ export class PrivatePage implements OnInit {
       title: 'Mesaj Kutusu',
       url: '/board/message-box',
       icon: 'chatbubbles-sharp'
-    },
-    {
-      title: 'Çıkış Yap',
-      url: '/login',
-      icon: 'log-out-sharp'
     }
   ];
 
   constructor(
     private router: Router,
+    private auth : AuthenticationService,
+    private pService : ProfileService,
+    private cService : ConstantService
     ) { 
+      this.API_URL = this.cService.API_URL;
   }
 
+  ionViewWillEnter()
+  {
+    this.pService.activeProfile.subscribe(data => {
+      if(data === null)  
+      {
+        this.pService.loadActiveProfile()
+      }
+      else
+      {
+        this.activeProfile = data
+      }
+    })
 
-  ngOnInit() {
+    this.auth.userData$.subscribe(res => {
+      this.UserID = res.data.UserID
+    })
+  }
+
+  ionViewWillLeave()
+  {
+
   }
 
   isInterestPage(): boolean
@@ -71,4 +106,8 @@ export class PrivatePage implements OnInit {
     return this.router.url === '/board/interest'
   }
 
+  logout()
+  {
+    this.auth.logout()
+  }
 }

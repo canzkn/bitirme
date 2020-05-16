@@ -101,7 +101,16 @@ export class UsersPage {
         }, {
           text: 'Mesaj Gönder',
           handler: () => {
-            this.router.navigate(['/board/message/', UserID, Fullname])
+            this.auth.userData$.subscribe(res=>{
+              if(res.data.UserID == UserID)
+              {
+                console.log("Kendinize mesaj atamazsınız!");
+              }
+              else
+              {
+                this.router.navigate(['/board/message/', UserID, Fullname])
+              }
+            })
           }
         }
       ]
