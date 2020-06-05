@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      <app-logo></app-logo>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <!-- title -->
+    <ion-row>
+      <ion-col size="12">
+        <h3>Kaynak Kod Arama</h3>
+      </ion-col>
+    </ion-row>
+    <!--#title -->
+
+    <!-- search and filter -->
+    <ion-row>
+      <ion-col size="12" size-md>
+        <ion-searchbar mode="ios" animated placeholder="bir cümle giriniz." [(ngModel)]="postData.query"></ion-searchbar>
+      </ion-col>
+      <ion-col size="12" size-md class="ion-align-self-center">
+        <ion-select placeholder="Dil Seçiniz" [(ngModel)]="postData.language">
+          <ion-select-option *ngFor="let tag of tags" value="{{tag.TagName}}">{{tag.TagName}}</ion-select-option>
+        </ion-select>
+      </ion-col>
+      <ion-col size="12" size-md class="ion-align-self-center">
+        <ion-button expand="full" color="dark" (click)="search(1)">Ara</ion-button>
+      </ion-col>
+    </ion-row>
+    <!--#search and filter -->
+
+    <!-- repository area -->      
+    <ion-row>
+      <ion-col size="12" size-md *ngIf="found.Found">
+        <p>Toplam <b>{{ found.Found }}</b> adet sonuç bulundu</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <!-- repository -->
+      <ion-col size="12" size-md>
+          <ion-list>
+            <ion-item *ngFor="let item of found.Repositories" href="https://github.com{{item.Url}}" target="_blank">
+              <ion-label>
+                <h2 [innerHTML]="item.Name"></h2>
+                <p [innerHTML]="item.Description"></p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+          <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">
+            <ion-infinite-scroll-content
+              loadingSpinner="bubbles"
+              loadingText="Loading more data...">
+            </ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+      </ion-col>
+      <!-- repository -->
+    </ion-row>
+    <!--#users area -->      
+  </ion-grid>
+
+  
+</ion-content>

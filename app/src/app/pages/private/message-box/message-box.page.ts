@@ -11,20 +11,7 @@ import { ConstantService } from '../../../services/constant/constant.service';
 export class MessageBoxPage {
   API_URL = '';
 
-  conversation = [{
-    ConversationID: '',
-    SenderID: '',
-    ReceiverID: '',
-    MessageDate: '',
-    LatestMessage: '',
-    Status: '',
-    User: [{
-      UserID: '',
-      Username: '',
-      Fullname: '',
-      AvatarImage: '',
-    }]
-  }];
+  conversation = [];
 
   constructor(
     private auth : AuthenticationService,
@@ -33,6 +20,7 @@ export class MessageBoxPage {
     private cService : ConstantService,
   ) {
     this.API_URL = this.cService.API_URL;
+    
    }
 
   ionViewWillEnter()
@@ -44,6 +32,7 @@ export class MessageBoxPage {
   ionViewWillLeave()
   {
     console.log("ionViewWillLeave")
+    this.conversation = [];
   }
 
   // load conversations
@@ -62,8 +51,13 @@ export class MessageBoxPage {
         {
           this.auth.logout();
         }
-        this.conversation = response
-        console.log(this.conversation)
+
+        if(response.message != "404_NOT_FOUND")
+        {
+          this.conversation = response
+          console.log(this.conversation)
+        }
+        
         loading.dismiss()
       })
     })

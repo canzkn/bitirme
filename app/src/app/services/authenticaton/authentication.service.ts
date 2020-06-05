@@ -16,7 +16,7 @@ export class AuthenticationService {
     private http: HttpClient,
     private storageService: StorageService,
     private router: Router,
-    private constantService: ConstantService
+    private constantService: ConstantService,
   ) { }
 
   // create user

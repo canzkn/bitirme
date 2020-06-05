@@ -165,6 +165,10 @@ class UserOperations extends Core\User {
         // execute query
         $statement->execute();
         $QuestionCount = $statement->fetchColumn();
+        if($QuestionCount == false)
+        {
+            $QuestionCount = 0;
+        }
         $row['QuestionCount'] = $QuestionCount;
         // fetch questions
         $query = 'SELECT QuestionID, Title, Reputation, Status, UpdateDate FROM ' . $this->tables[1] . ' WHERE QuestionID IN ' . $QuestionIDQueryString . $filterSort;

@@ -94,7 +94,7 @@ class Authentication extends Core\User {
         {
             
             // create the user
-            $query = 'INSERT INTO '. $this->table .' (Username, Email, Password, RegisterDate, Fullname) VALUES (:Username, :Email, :Password, :RegisterDate, :Fullname)';
+            $query = 'INSERT INTO '. $this->table .' (Username, Email, Password, RegisterDate, Fullname, LastSeen) VALUES (:Username, :Email, :Password, :RegisterDate, :Fullname, :LastSeen)';
             
             // prepare statement
             $statement = $this->conn->prepare($query);
@@ -104,6 +104,7 @@ class Authentication extends Core\User {
             $statement->bindParam(':Username', $this->getUsername());
             $statement->bindParam(':Email', $this->getEmail());
             $statement->bindParam(':RegisterDate', $this->getRegisterDate());
+            $statement->bindParam(':LastSeen', $this->getRegisterDate());
             $statement->bindParam(':Password', Functions::hashPassword($this->getPassword()));
             // execute query
             if($statement->execute())

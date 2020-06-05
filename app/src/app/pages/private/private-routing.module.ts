@@ -61,6 +61,10 @@ const routes: Routes = [
       {
         path: 'tag/:id/:name',
         loadChildren: () => import('./tag/tag.module').then( m => m.TagPageModule)
+      },
+      {
+        path: 'research',
+        loadChildren: () => import('./research/research.module').then( m => m.ResearchPageModule)
       }
     ]
   }

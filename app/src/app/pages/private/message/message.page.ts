@@ -16,14 +16,7 @@ export class MessagePage {
   }
 
   conversation = {
-    Messages : [{
-      ConversationID : '',
-      Message : '',
-      MessageDate : '',
-      MessageID : '',
-      ReceiverID : '',
-      SenderID : '',
-    }]
+    Messages : []
   }
   
   currentUserID: any;
@@ -59,8 +52,12 @@ export class MessagePage {
   {
     this.auth.userData$.subscribe(res => {
       this.conversationService.getMessages(res.data, this.targetUser).subscribe(response => {
-        this.conversation.Messages = response
-        console.log(this.conversation.Messages)
+
+        if(response.message != "404_NOT_FOUND")
+        {
+          this.conversation.Messages = response
+          console.log(this.conversation.Messages)
+        }
         setTimeout(() => {
           this.content.scrollToBottom(200);
         })
@@ -77,14 +74,7 @@ export class MessagePage {
     }
 
     this.conversation = {
-      Messages : [{
-        ConversationID : '',
-        Message : '',
-        MessageDate : '',
-        MessageID : '',
-        ReceiverID : '',
-        SenderID : '',
-      }]
+      Messages : []
     }
     
     this.newMessage = '';
@@ -95,6 +85,7 @@ export class MessagePage {
   {
     this.auth.userData$.subscribe(res => {
       this.conversationService.sendMessage(res.data, {Message: this.newMessage, ReceiverID: this.targetUser.UserID}).subscribe(response => {
+        console.log(response)
         if(response.message == "AUTHORIZATION_FAILED")
         {
           this.auth.logout();

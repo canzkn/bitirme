@@ -114,6 +114,7 @@ export class QuestionsPage {
 
   // segment change
   segmentChanged(ev: any) {
+    console.log(ev.detail.value)
     if(this.currentEvent)
     {
       this.currentEvent.target.disabled = false
@@ -122,6 +123,7 @@ export class QuestionsPage {
     if(this.postData.type != 'special')
     {
       this.ionViewWillLeave()
+      this.postData.type = ev.detail.value
       this.loadQuestions(this.postData)
     }
   }
@@ -151,7 +153,8 @@ export class QuestionsPage {
       await loading.present();
     }
     this._userDataListener = this.auth.userData$.subscribe(res => {
-      // console.log(res)
+      console.log(JSON.stringify(postData))
+      
       this.qService.getAllQuestions(res.data, JSON.stringify(postData)).subscribe(response => {
         if(response.message == "AUTHORIZATION_FAILED")
         {

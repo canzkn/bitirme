@@ -46,6 +46,11 @@ export class PrivatePage {
       title: 'Kullanıcılar',
       url: '/board/users',
       icon: 'people-sharp'
+    },
+    {
+      title: 'Kaynak Kod Arama',
+      url: '/board/research',
+      icon: 'code-slash-sharp'
     }
   ];
 
@@ -80,6 +85,7 @@ export class PrivatePage {
 
   ionViewWillEnter()
   {
+    this.pService.activeProfile.next(null);
     this.pService.activeProfile.subscribe(data => {
       if(data === null)  
       {
