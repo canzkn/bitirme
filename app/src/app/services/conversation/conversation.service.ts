@@ -36,4 +36,38 @@ export class ConversationService {
       headers: {'Authorization': 'UserID='+ auth.UserID +'; token='+ auth.Token +';'}
     })
   }
+
+  // -------------------- Group Message ----------------------------
+
+  createGroup(auth, post_data) : Observable<any>
+  {
+    return this.http.post(this.constantService.API_URL + 'group_conversation/create', post_data, {
+      headers: {'Authorization': 'UserID='+ auth.UserID +'; token='+ auth.Token +';'}
+    })
+  }
+
+  getGroups(auth) : Observable<any>
+  {
+    return this.http.get(this.constantService.API_URL + 'group_conversation/get', {
+      headers: {'Authorization': 'UserID='+ auth.UserID +'; token='+ auth.Token +';'}
+    })
+  }
+
+  // Send message
+  sendGroupMessage(auth, post_data) : Observable<any>
+  {
+    return this.http.post(this.constantService.API_URL + 'group_conversation/send_message', post_data, {
+      headers: {'Authorization': 'UserID='+ auth.UserID +'; token='+ auth.Token +';'}
+    })
+  }
+
+  // get conversation messages
+  getGroupMessages(auth, post_data) : Observable<any>
+  {
+    return this.http.post(this.constantService.API_URL + 'group_conversation/messages', post_data, {
+      headers: {'Authorization': 'UserID='+ auth.UserID +'; token='+ auth.Token +';'}
+    })
+  }
+
+  // -------------------- Group Message ----------------------------
 }

@@ -65,6 +65,14 @@ const routes: Routes = [
       {
         path: 'research',
         loadChildren: () => import('./research/research.module').then( m => m.ResearchPageModule)
+      },
+      {
+        path: 'create-group',
+        loadChildren: () => import('./create-group/create-group.module').then( m => m.CreateGroupPageModule)
+      },
+      {
+        path: 'group-message/:id/:name/:userid',
+        loadChildren: () => import('./group-message/group-message.module').then( m => m.GroupMessagePageModule)
       }
     ]
   }

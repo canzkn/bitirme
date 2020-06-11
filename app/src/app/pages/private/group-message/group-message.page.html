@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button text="" defaultHref="/board/message-box"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{GroupInfo.GroupName}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="messages-container start-message" *ngIf="conversation.Messages.length == 0">Bir konuşma başlatın.</div>
+  <div class="messages-container" *ngIf="conversation.Messages.length > 0">
+    <ion-grid>
+      <ion-row *ngFor = "let message of conversation.Messages">
+        <ion-col size="9" [offset]="(message.SenderID == currentUserID) ? '3' : '0'" [ngClass]="(message.SenderID == currentUserID) ? 'message my-message' : 'message other-message'">
+          <b>{{ message.Fullname }}</b><br>
+          <span>{{message.Message}}</span>
+          <div class="time ion-text-right" text-right><br>
+            {{message.MessageDate | date: 'dd/MM/yyyy HH:mm'}}
+          </div>
+        </ion-col> 
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
+
+<ion-footer mode="md">
+  <ion-toolbar color="light">
+    <ion-row>
+      <ion-col size="10">
+        <textarea autosize maxRows="3" [(ngModel)]="newMessage" class="message-input"></textarea>
+      </ion-col>
+      <ion-col size="2">
+        <ion-button expand="block" fill="clear" color="primary" [disabled]="newMessage === ''" class="message-button"
+          (click)="sendMessage()">
+          <ion-icon name="send-sharp" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

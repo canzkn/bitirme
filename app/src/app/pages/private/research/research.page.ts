@@ -42,6 +42,12 @@ export class ResearchPage {
   {
     console.log("ionViewWillLeave")
     this.tags = [];
+    this.found = {Found:0, Repositories: []};
+    this.postData = {
+      query : '',
+      language: '',
+      page : 1
+    }
   }
 
   // load tags

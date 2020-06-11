@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button text="" defaultHref="/board/message-box"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click) = "submit()" disabled="{{buttonDisable}}">
+        <ion-icon name="arrow-forward-sharp" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Grup Oluştur</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list mode="ios" lines="full" class="ion-no-margin ion-no-padding">
+    <ion-list-header> 
+      <ion-label>Ayarlar</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-input type="text" placeholder="Grup Adı" [(ngModel)] = "postData.GroupName"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-list mode="ios" lines="full" class="ion-no-margin ion-no-padding">
+    <ion-list-header> 
+      <ion-label>Kullanıcılar</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-searchbar mode="ios" animated placeholder="bir kullanıcı adı giriniz." (ionChange)="filterText($event)"></ion-searchbar>
+    </ion-item>
+    <ion-item *ngFor="let user of users | userFilter : textFilter">
+      <ion-avatar slot="start">
+        <img src="{{API_URL}}{{user.AvatarImage}}">
+      </ion-avatar>
+      <ion-label>
+        <h2>{{user.Fullname}}</h2>
+        <p>@{{user.Username}}</p>
+      </ion-label>
+      <ion-button *ngIf="isSelect(user.UserID)" color="danger" slot="end" mode="ios" (click) = "unselect(user.UserID)">
+        <ion-icon slot="icon-only" name="remove-sharp"></ion-icon>
+      </ion-button>
+
+      <ion-button *ngIf="!isSelect(user.UserID)" color="dark" slot="end" mode="ios" (click) = "select(user.UserID)">
+        <ion-icon slot="icon-only" name="add-sharp"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>

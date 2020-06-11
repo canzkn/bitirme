@@ -12,6 +12,8 @@ export class MessageBoxPage {
   API_URL = '';
 
   conversation = [];
+  groups = [];
+  currentUserID: any;
 
   constructor(
     private auth : AuthenticationService,
@@ -20,19 +22,25 @@ export class MessageBoxPage {
     private cService : ConstantService,
   ) {
     this.API_URL = this.cService.API_URL;
-    
    }
 
   ionViewWillEnter()
   {
     console.log("ionViewWillEnter")
+
+    this.auth.userData$.subscribe(logged => {
+      this.currentUserID = logged.data.UserID;
+    })
+
     this.loadConversations()
+    this.loadGroups()
   }
 
   ionViewWillLeave()
   {
     console.log("ionViewWillLeave")
     this.conversation = [];
+    this.groups = [];
   }
 
   // load conversations
@@ -59,6 +67,23 @@ export class MessageBoxPage {
         }
         
         loading.dismiss()
+      })
+    })
+  }
+
+  loadGroups()
+  {
+    this.auth.userData$.subscribe(res => {
+      this.conversationService.getGroups(res.data).subscribe(response => {
+        if(response.message == "AUTHORIZATION_FAILED")
+        {
+          this.auth.logout();
+        }
+        else
+        {
+          this.groups = response
+          console.log(this.groups)
+        }
       })
     })
   }
